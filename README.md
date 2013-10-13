@@ -1,4 +1,6 @@
 graphs
 ======
 
-google spreadsheet api in javascript with graphs
+google spreadsheet api
+node express framework
+graphs
