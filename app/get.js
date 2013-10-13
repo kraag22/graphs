@@ -1,5 +1,5 @@
 var Q       = require('q');
-var https   = require('https');
+var https   = require('http');
 
 exports.cellsXML = function (key) {
 
@@ -9,7 +9,7 @@ exports.cellsXML = function (key) {
 
   var options = {
     host: "spreadsheets.google.com",
-    port: 443,
+    port: 80,
     path: "/feeds/cells/"+key+"/od6/public/basic",
     method: 'GET'
   };
