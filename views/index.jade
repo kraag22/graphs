@@ -4,4 +4,19 @@ block content
   h1= title
   p Welcome to #{title}
 
-  p #{data}
+  //p #{data}
+
+  canvas(id="pie" width="400" height="400") 
+
+  canvas(id="bar" width="1000" height="600") 
+
+  script
+    var graph = new gra.Data(!{data});
+
+    var ctx = document.getElementById("pie").getContext("2d");
+    graph.renderPie(ctx);
+  
+  
+    var ctx = document.getElementById("bar").getContext("2d");
+    graph.renderBar(ctx);
+
