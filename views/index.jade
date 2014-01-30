@@ -10,6 +10,8 @@ block content
 
   canvas(id="bar" width="1000" height="600") 
 
+  canvas(id="radar" width="600" height="600") 
+
   script
     var graph = new gra.Data(!{data});
 
@@ -20,3 +22,5 @@ block content
     var ctx = document.getElementById("bar").getContext("2d");
     graph.renderBar(ctx);
 
+    var ctx = document.getElementById("radar").getContext("2d");
+    graph.renderRadar(ctx, 'B');
