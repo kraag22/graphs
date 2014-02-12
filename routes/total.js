@@ -4,5 +4,6 @@
  */
 
 exports.list = function(req, res){
-  res.render('user', { title: 'Express', data: 'ahoj' });
+
+  res.render('total', { title: 'Express', data: 'ahoj' });
 };
