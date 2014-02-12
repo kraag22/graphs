@@ -6,21 +6,13 @@ block content
 
   //p #{data}
 
-  canvas(id="pie" width="400" height="400") 
+  canvas(id="pie" width="400" height="400")
 
-  canvas(id="bar" width="1000" height="600") 
-
-  canvas(id="radar" width="600" height="600") 
-
-  script
+  script.
     var graph = new gra.Data(!{data});
 
     var ctx = document.getElementById("pie").getContext("2d");
     graph.renderPie(ctx);
-  
-  
-    var ctx = document.getElementById("bar").getContext("2d");
-    graph.renderBar(ctx);
 
-    var ctx = document.getElementById("radar").getContext("2d");
-    graph.renderRadar(ctx, 'B');
+
+

@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1 Who plays with who
+
+  canvas(id="radar" width="600" height="600")
+
+  script.
+    var graph = new gra.Data(!{data});
+
+    var ctx = document.getElementById("radar").getContext("2d");
+    graph.renderRadar(ctx, 'B');

@@ -1,30 +1,12 @@
 extends layout
 
 block content
-  h1= title
-  p Wlcome to #{title}
+  h1 Total wins & looses
 
-  canvas(id="myChart" width="400" height="400") 
+  canvas(id="bar" width="1000" height="600")
 
-  script
-    var data = [
-      {
-        value: 30,
-        color:"#F38630"
-      },
-      {
-        value : 50,
-        color : "#E0E4CC"
-      },
-      {
-        value : 100,
-        color : "#69D2E7"
-      },
-      {
-        value : 120,
-        color : "#a0a0a0"
-      }
-    ];
+  script.
+    var graph = new gra.Data(!{data});
 
-    var ctx = document.getElementById("myChart").getContext("2d");
-    var myNewChart = new Chart(ctx).Pie(data);
+    var ctx = document.getElementById("bar").getContext("2d");
+    graph.renderBar(ctx);
