@@ -1,7 +1,7 @@
 var gra = gra || {};
 
 gra.Data = function(data) {
-    
+
     this.data_ = data;
     this.players_ = {};
     this.nameRegexp = /[A-Z]{1}1$/;
@@ -9,6 +9,19 @@ gra.Data = function(data) {
     this.plays_ = [];
 
     this.init();
+};
+
+gra.Data.prototype.getPlayers = function(minPlays) {
+    var plrs = {};
+
+    for (var playerIndex in this.players_) {
+        var player = this.players_[playerIndex];
+        if (player.wins + player.loses > minPlays) {
+            plrs[playerIndex] = this.getPlayerName(playerIndex);
+        }
+    }
+
+    return plrs;
 };
 
 gra.Data.prototype.getPlayerName = function(index) {
@@ -26,7 +39,7 @@ gra.Data.prototype.init = function() {
             if (row.charAt(0) === 'A') {
                 continue;
             }
-            
+
             if (this.players_[row.charAt(0)] === undefined) {
                 console.log(row);
             }
@@ -122,7 +135,7 @@ gra.Data.prototype.renderRadar = function(ctx, current) {
             }
 
         }
-        
+
     }
     console.log(results);
 

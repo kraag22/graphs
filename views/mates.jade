@@ -3,10 +3,35 @@ extends layout
 block content
   h1 Who plays with who
 
+  form
+    select(id="players" onchange="update();")
+
   canvas(id="radar" width="600" height="600")
 
   script.
     var graph = new gra.Data(!{data});
 
+    var players = graph.getPlayers(2);
+
+    var select = document.getElementById('players');
+
+    for (var player in players) {
+        console.log(player);
+        var opt = document.createElement("option");
+        opt.value = player;
+        opt.text = players[player];
+        select.appendChild(opt);
+    }
+
     var ctx = document.getElementById("radar").getContext("2d");
     graph.renderRadar(ctx, 'B');
+
+    update = function() {
+        var myselect = document.getElementById("players");
+        var selected = myselect.options[myselect.selectedIndex].value;
+
+        var radar = document.getElementById("radar");
+        radar.width = 600;
+        radar.height = 600;
+        graph.renderRadar(ctx, selected);
+    };
