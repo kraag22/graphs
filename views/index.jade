@@ -1,18 +1,19 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  h1 Season 2013/2014 completetion
 
-  //p #{data}
+  canvas(id="pie" width="400" height="400" class="left")
 
-  canvas(id="pie" width="400" height="400")
+  div(id="percents" class="completetion left")
 
   script.
     var graph = new gra.Data(!{data});
 
     var ctx = document.getElementById("pie").getContext("2d");
     graph.renderPie(ctx);
+
+    document.getElementById("percents").textContent = graph.getSeasonCompletetion() + " %";
 
 
 

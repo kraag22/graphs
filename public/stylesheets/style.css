@@ -5,3 +5,11 @@ body {
 a {
   color: #00b7ff;
 }
+div.completetion {
+  font-size: 10em;
+  margin-top: 130px;
+  margin-left: 40px;
+}
+.left {
+  float: left;
+}

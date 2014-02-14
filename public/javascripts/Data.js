@@ -7,6 +7,7 @@ gra.Data = function(data) {
     this.nameRegexp = /[A-Z]{1}1$/;
     this.dataRegexp = /[A-Z]{1}[0-9]{1,3}/;
     this.plays_ = [];
+    this.numberOfPlays = 0;
 
     this.init();
 };
@@ -37,6 +38,7 @@ gra.Data.prototype.init = function() {
         }
         else if (this.dataRegexp.test(row)) {
             if (row.charAt(0) === 'A') {
+                this.numberOfPlays++;
                 continue;
             }
 
@@ -55,20 +57,39 @@ gra.Data.prototype.init = function() {
     }
 };
 
+gra.Data.prototype.getNumberOfPlays = function() {
+    return this.numberOfPlays;
+};
+
+gra.Data.prototype.getTotalNumberOfPlays = function() {
+    return 35;
+};
+
 gra.Data.prototype.renderPie = function(ctx) {
     var data = [];
 
-    for (var playerIndex in this.players_) {
-        var player = this.players_[playerIndex];
-        var randomColor = '#';
-        var letters = [0,1,2,3,4,5,6,7,8,9,'A','B','C','D','E','F'];
-        for (var i = 0; i<6; i++) {
-           randomColor += letters[Math.round(Math.random()*10)];
-        }
-        data.push({value:player.wins, color:randomColor});
-    }
+    // number of wins per player
+    // for (var playerIndex in this.players_) {
+    //     var player = this.players_[playerIndex];
+    //     var randomColor = '#';
+    //     var letters = [0,1,2,3,4,5,6,7,8,9,'A','B','C','D','E','F'];
+    //     for (var i = 0; i<6; i++) {
+    //        randomColor += letters[Math.round(Math.random()*10)];
+    //     }
+    //     data.push({value:player.wins, color:randomColor});
+    // }
+
+    var percents = this.getSeasonCompletetion();
+
+    data.push({value:percents, color:"#69D2E7"});
+    data.push({value:100-percents, color:"E0E4CC"});
+    console.log('odehrano ' + percents);
 
     return new Chart(ctx).Pie(data);
+};
+
+gra.Data.prototype.getSeasonCompletetion = function() {
+    return Math.round(100 * this.getNumberOfPlays() / this.getTotalNumberOfPlays());
 };
 
 gra.Data.prototype.renderBar = function(ctx) {
