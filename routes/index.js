@@ -8,7 +8,7 @@ var Q        = require('q');
 exports.index = function(req, res){
 
   data.get().done(function(data){
-    res.render('index', { title: 'Express', data: JSON.stringify(data) });
+    res.render('index', { data: JSON.stringify(data) });
   });
 
 };
