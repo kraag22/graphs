@@ -1,9 +1,32 @@
 var appGet   = require('../app/get.js');
 var appParse = require('../app/parse.js');
+var mongo    = require('../app/mongo.js');
 var Q        = require('q');
 
-
+// decide if download data from mongo or google api
 exports.get = function() {
+
+  return mongo.connect()
+  .then(mongo.getTodayData)
+  .then(function(data){
+    if (data) {
+      console.log('data.js, TRUE');
+      var deffered = Q.defer();
+      deffered.resolve(data);
+      return deffered.promise;
+    }
+    else {
+      console.log('data.js, FALSE');
+
+      return exports.getApi().then(mongo.saveData);
+    }
+
+  });
+
+};
+
+// fetches newest data from google API
+exports.getApi = function() {
 
   var deffered = Q.defer();
 
@@ -17,6 +40,7 @@ exports.get = function() {
   return deffered.promise;
 };
 
+// returns data from stored variable
 exports.getStatic = function() {
 
   var deffered = Q.defer();
