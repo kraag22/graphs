@@ -31,12 +31,16 @@ gra.Data.prototype.getPlayerName = function(index) {
 
 gra.Data.prototype.init = function() {
     console.log(this.data_);
+    var row;
 
-    for (var row in this.data_) {
+    for (row in this.data_) {
         if (this.nameRegexp.test(row)) {
             this.players_[row.charAt(0)] = {name: this.data_[row], wins: 0, loses: 0};
         }
-        else if (this.dataRegexp.test(row)) {
+    }
+
+    for (row in this.data_) {
+        if (this.dataRegexp.test(row)) {
             if (row.charAt(0) === 'A') {
                 this.numberOfPlays++;
                 continue;
