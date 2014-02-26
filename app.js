@@ -1,3 +1,14 @@
+var generate_mongo_url = function(obj){
+  obj.hostname = (obj.hostname || 'localhost');
+  obj.port = (obj.port || 27017);
+  obj.db = (obj.db || 'test');
+  if(obj.username && obj.password){
+    return 'mongodb://' + obj.username + ':' + obj.password + '@' + obj.hostname + ':' + obj.port + '/' + obj.db;
+  }
+  else{
+    return 'mongodb://' + obj.hostname + ':' + obj.port + '/' + obj.db;
+  }
+};
 
 /**
  * Module dependencies.
@@ -9,6 +20,7 @@ var total = require('./routes/total');
 var mates = require('./routes/mates');
 var http = require('http');
 var path = require('path');
+var mongoose = require('mongoose');
 
 var app = express();
 
@@ -33,6 +45,37 @@ app.get('/', routes.index);
 app.get('/totals', total.list);
 app.get('/mates', mates.list);
 
-http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+
+var mongo;
+if(process.env.VCAP_SERVICES){
+  var env = JSON.parse(process.env.VCAP_SERVICES);
+  mongo = env['mongodb2-2.4.8'][0].credentials;
+}
+else{
+  mongo = {
+    'hostname':'localhost',
+    'port':27017,
+    'username':'',
+    'password':'',
+    'name':'',
+    'db':'db'
+  };
+}
+
+var mongoUrl = generate_mongo_url(mongo);
+console.log(mongoUrl);
+
+mongoose.connection.on('connected', function () {
+  console.log('Connected to mongo server.');
+
+  http.createServer(app).listen(app.get('port'), function(){
+    console.log('Express server listening on port ' + app.get('port'));
+  });
+
 });
+
+mongoose.connection.on('error', function () {
+  console.log('Could not connect to mongo server!');
+});
+
+mongoose.connect(mongoUrl);

@@ -6,8 +6,7 @@ var Q        = require('q');
 // decide if download data from mongo or google api
 exports.get = function() {
 
-  return mongo.connect()
-    .then(mongo.getTodayData)
+  return mongo.getTodayData()
     .then(function(data){
 
     if (data) {
