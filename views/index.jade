@@ -1,11 +1,15 @@
 extends layout
 
 block content
-  h1 Season 2013/2014 completetion
+  h1(class="section-heading") Season 2013/2014 completetion
+  p(class="lead section-lead") This stylish template features placeholder images from placehold.it and lorempixel! With some custom font stylings and awesome photos, you will have a beautiful website up and running in no time!
+  p(class="section-paragraph") Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sollicitudin auctor quam ac tempor. Cras a ante sed libero mollis sodales. Praesent fringilla, neque ut ultrices faucibus, dolor eros ultrices neque, nec bibendum arcu ipsum eget justo. Phasellus vestibulum sagittis purus laoreet varius. Pellentesque malesuada malesuada mattis. Aliquam sed porta nisi, eget suscipit dolor. Nam ipsum sapien, rhoncus eu leo eu, ultricies pellentesque tellus.
 
-  canvas(id="pie" width="400" height="400" class="left")
 
-  div(id="percents" class="completetion left")
+
+  canvas(id="pie" width="400" height="400")
+
+  div(id="percents" class="completetion")
 
   script.
     var graph = new gra.Data(!{data});

@@ -1,15 +1,6 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
-a {
-  color: #00b7ff;
-}
 div.completetion {
   font-size: 10em;
-  margin-top: 130px;
-  margin-left: 40px;
 }
-.left {
-  float: left;
+.sc-background {
+  background-color: rgba(255,255,255,0.8);
 }
