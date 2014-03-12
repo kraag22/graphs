@@ -87,8 +87,10 @@ gra.Data.prototype.renderPie = function(id) {
       }
     ],
     "valueField": "days",
-    "titleField": "title"
+    "titleField": "title",
+    "panEventsEnabled": false
   });
+
 };
 
 gra.Data.prototype.getSeasonCompletetion = function() {
@@ -139,6 +141,7 @@ gra.Data.prototype.renderBar = function(id) {
       "valueField": "looses"
     }],
     "rotate": false,
+    "panEventsEnabled": false,
     "categoryField": "player",
     "categoryAxis": {
       "gridPosition": "start",
