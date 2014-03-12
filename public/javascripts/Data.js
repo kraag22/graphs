@@ -69,31 +69,30 @@ gra.Data.prototype.getTotalNumberOfPlays = function() {
     return 35;
 };
 
-gra.Data.prototype.renderPie = function(ctx) {
-    var data = [];
+gra.Data.prototype.renderPie = function(id) {
+  var data = [];
 
-    // number of wins per player
-    // for (var playerIndex in this.players_) {
-    //     var player = this.players_[playerIndex];
-    //     var randomColor = '#';
-    //     var letters = [0,1,2,3,4,5,6,7,8,9,'A','B','C','D','E','F'];
-    //     for (var i = 0; i<6; i++) {
-    //        randomColor += letters[Math.round(Math.random()*10)];
-    //     }
-    //     data.push({value:player.wins, color:randomColor});
-    // }
+  var percents = this.getSeasonCompletetion();
 
-    var percents = this.getSeasonCompletetion();
-
-    data.push({value:percents, color:"#69D2E7"});
-    data.push({value:100-percents, color:"E0E4CC"});
-    console.log('odehrano ' + percents);
-
-    return new Chart(ctx).Pie(data);
+  var chart = AmCharts.makeChart("chartdiv", {
+    "type": "pie",
+    "theme": "light",
+    "dataProvider": [
+      {
+        "title": "remains",
+        "days": this.getTotalNumberOfPlays() - this.getNumberOfPlays()
+      }, {
+        "title": "played",
+        "days": this.getNumberOfPlays()
+      }
+    ],
+    "valueField": "days",
+    "titleField": "title"
+  });
 };
 
 gra.Data.prototype.getSeasonCompletetion = function() {
-    return Math.round(100 * this.getNumberOfPlays() / this.getTotalNumberOfPlays());
+  return Math.round(100 * this.getNumberOfPlays() / this.getTotalNumberOfPlays());
 };
 
 
