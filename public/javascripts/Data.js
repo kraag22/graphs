@@ -53,7 +53,7 @@ gra.Data.prototype.init = function() {
                 if (this.data_[row] == 1) {
                     this.players_[row.charAt(0)].wins++;
                 }
-                else {
+                else if (this.data_[row] == 0) {
                     this.players_[row.charAt(0)].loses++;
                 }
             }
@@ -96,31 +96,58 @@ gra.Data.prototype.getSeasonCompletetion = function() {
     return Math.round(100 * this.getNumberOfPlays() / this.getTotalNumberOfPlays());
 };
 
-gra.Data.prototype.renderBar = function(ctx) {
-    var wins = [];
-    var loses = [];
-    var labels = [];
 
-    for (var playerIndex in this.players_) {
-        var player = this.players_[playerIndex];
-        labels.push(this.getPlayerName(playerIndex));
-        loses.push(player.loses);
-        wins.push(player.wins);
+gra.Data.prototype.renderBar = function(id) {
+  var data = [];
+  console.log(this.players_);
+  for (var playerIndex in this.players_) {
+    var player = this.players_[playerIndex];
+    if (player.loses + player.wins > 1) {
+      data.push({
+        "player": this.getPlayerName(playerIndex),
+        "wins": player.wins,
+        "looses": player.loses
+      });
     }
-    console.log(loses, wins, labels);
+  }
 
-    return new Chart(ctx).Bar({labels:labels, datasets:[
-        {
-            fillColor : "rgba(151,187,205,0.5)",
-            strokeColor : "rgba(151,187,205,1)",
-            data : wins
-        },
-        {
-            fillColor : "rgba(220,220,220,0.5)",
-            strokeColor : "rgba(220,220,220,1)",
-            data : loses
-        }]});
-};
+  console.log(data);
+
+  var chart = AmCharts.makeChart(id, {
+    "type": "serial",
+    "theme": "light",
+    "columnWidth:": 0.6,
+    "columnSpacing": 5,
+    "dataProvider": data,
+    "valueAxes": [{
+      "axisAlpha": 0,
+      "position": "top"
+    }],
+    "startDuration": 1,
+    "graphs": [{
+      "balloonText": "Wins:[[value]]",
+      "fillAlphas": 0.8,
+      "lineAlpha": 0.2,
+      "title": "Wins",
+      "type": "column",
+      "valueField": "wins"
+    }, {
+      "balloonText": "Looses:[[value]]",
+      "fillAlphas": 0.8,
+      "lineAlpha": 0.2,
+      "title": "Looses",
+      "type": "column",
+      "valueField": "looses"
+    }],
+    "rotate": false,
+    "categoryField": "player",
+    "categoryAxis": {
+      "gridPosition": "start",
+      "position": "left"
+    }
+  });
+}
+
 
 // current - char of currently counted player
 gra.Data.prototype.renderRadar = function(ctx, current) {

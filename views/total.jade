@@ -3,10 +3,12 @@ extends layout
 block content
   h1 Total wins & looses
 
-  canvas(id="bar" width="1000" height="600")
+
+  div(class="col-xs-12 col-sm-10 col-sm-offset-1")
+    div(id="chartdiv" style="height:500px;font-size: 11px;")
 
   script.
     var graph = new gra.Data(!{data});
+    graph.renderBar("chartdiv");
 
-    var ctx = document.getElementById("bar").getContext("2d");
-    graph.renderBar(ctx);
+

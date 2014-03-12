@@ -13,18 +13,25 @@ html
 
     script(src='/javascripts/Chart.js')
     script(src='/javascripts/Data.js')
+    script(src='/amcharts/amcharts.js')
+    script(src='/amcharts/serial.js')
+    script(src='/amcharts/themes/light.js')
   body
+
+
     include menu
 
     div(class="full-width-image-1")
       div(class="logo-wrapper")
         div(class="container")
-          div(class="row")
-            div(class="col-lg-12 section sc-background")
-              block content
+          div(class="row section sc-background")
+            block content
+
 
     include footer
 
 
+
     script(src='/libs/jquery/dist/jquery.min.js')
     script(src='/libs/bootstrap/dist/js/bootstrap.min.js')
+
