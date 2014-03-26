@@ -1,18 +1,20 @@
 extends layout
 
 block content
-  h1 Who plays with who
+  h1 Who played with
+    select(id="players" onchange="update();" class="player-select")
 
-  form
-    select(id="players" onchange="update();")
 
-  canvas(id="radar" width="600" height="600")
+
+
+  div(class="col-xs-12 col-sm-10 col-sm-offset-1")
+    div(id="chartdiv" style="height:500px;font-size: 11px;")
 
   script.
     var graph = new gra.Data(!{data});
 
     var players = graph.getPlayers(2);
-
+    var selectedPlayer = "B";
     var select = document.getElementById('players');
 
     for (var player in players) {
@@ -20,18 +22,17 @@ block content
         var opt = document.createElement("option");
         opt.value = player;
         opt.text = players[player];
+        if (player == selectedPlayer) {
+            opt.selected = true;
+        }
         select.appendChild(opt);
     }
 
-    var ctx = document.getElementById("radar").getContext("2d");
-    graph.renderRadar(ctx, 'B');
+    var graph = new gra.Data(!{data});
+    graph.renderChart("chartdiv", selectedPlayer);
 
     var update = function() {
         var myselect = document.getElementById("players");
         var selected = myselect.options[myselect.selectedIndex].value;
-
-        var radar = document.getElementById("radar");
-        radar.width = 600;
-        radar.height = 600;
-        graph.renderRadar(ctx, selected);
+        graph.renderChart("chartdiv", selected);
     };

@@ -146,14 +146,86 @@ gra.Data.prototype.renderBar = function(id) {
     "categoryAxis": {
       "gridPosition": "start",
       "position": "left"
+    },
+    "legend": {
+      "horizontalGap": 10,
+      "maxColumns": 1,
+      "position": "bottom",
+      "useGraphSettings": true,
+      "markerSize": 10
     }
   });
 };
 
+gra.Data.prototype.renderChart = function(ctx, current) {
+
+  var data = this.statsDataForPlayer(current);
+  var dataProvider = [];
+
+  for (var key in data) {
+    if ( /^[A-Z]{1}$/.test(key) && data.hasOwnProperty(key)) {
+
+      if (data[key]['with'] + data[key]['against'] <= 1) {
+        continue;
+      }
+
+      var oneData = {};
+      oneData['name'] = this.getPlayerName(key);
+      oneData['with'] = data[key]['with'];
+      oneData['against'] = data[key]['against'];
+      dataProvider.push(oneData);
+    }
+  }
+
+  AmCharts.makeChart(ctx, {
+    "type": "serial",
+    "theme": "none",
+    "legend": {
+      "horizontalGap": 10,
+      "maxColumns": 1,
+      "position": "bottom",
+      "useGraphSettings": true,
+      "markerSize": 10
+    },
+    "dataProvider": dataProvider,
+    "valueAxes": [{
+        "stackType": "regular",
+        "axisAlpha": 0.3,
+        "gridAlpha": 0
+    }],
+    "graphs": [{
+        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+        "fillAlphas": 0.8,
+        "labelText": "[[value]]",
+        "lineAlpha": 0.3,
+        "title": "Played against",
+        "type": "column",
+        "color": "#000000",
+        "valueField": "against"
+    },
+    {
+        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
+        "fillAlphas": 0.8,
+        "labelText": "[[value]]",
+        "lineAlpha": 0.3,
+        "title": "Played with",
+        "type": "column",
+        "color": "#000000",
+        "valueField": "with"
+    }],
+    "categoryField": "name",
+    "categoryAxis": {
+        "gridPosition": "start",
+        "axisAlpha": 0,
+        "gridAlpha": 0,
+        "position": "left"
+    }
+  });
+};
 
 // current - char of currently counted player
-gra.Data.prototype.renderRadar = function(ctx, current) {
-  console.log(this.data_);
+gra.Data.prototype.statsDataForPlayer = function(current) {
+
   var results = {};
   // from B to last existant letter
   for (var i = 66; i<100; i++) {
@@ -191,44 +263,8 @@ gra.Data.prototype.renderRadar = function(ctx, current) {
     }
 
   }
-  console.log(results);
 
-  // prepare data for graph
-  var data = {labels:[], datasets:[{
-    fillColor : "rgba(220,220,220,0.5)",
-    strokeColor : "rgba(220,220,220,1)",
-    pointColor : "rgba(220,220,220,1)",
-    pointStrokeColor : "#fff",
-    data : []
-  },
-  {
-    fillColor : "rgba(151,187,205,0.5)",
-    strokeColor : "rgba(151,187,205,1)",
-    pointColor : "rgba(151,187,205,1)",
-    pointStrokeColor : "#fff",
-    data : []
-  }]};
-
-  for (var k = 66; k<100; k++) {
-    l = String.fromCharCode(k);
-    if (this.players_[l] === undefined) {
-      break;
-    }
-
-    // skip actually counted player
-    if (l === current) {
-      continue;
-    }
-
-    if ((results[l].with + results[l].against) <=1) {
-      continue;
-    }
-    data.labels.push(this.getPlayerName(l));
-    data.datasets[1].data.push(results[l].with);
-    data.datasets[0].data.push(results[l].against);
-  }
-
-  return new Chart(ctx).Radar(data);
+  return results;
 };
 
 
