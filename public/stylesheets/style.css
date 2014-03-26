@@ -27,3 +27,8 @@ div.completetion {
   appearance: none;
   cursor: pointer;
 }
+.percent-wrapper {
+  height: 500px;
+  display: table-cell;
+  vertical-align: middle;
+}
