@@ -70,11 +70,8 @@ gra.Data.prototype.getTotalNumberOfPlays = function() {
 };
 
 gra.Data.prototype.renderPie = function(id) {
-  var data = [];
 
-  var percents = this.getSeasonCompletetion();
-
-  var chart = AmCharts.makeChart("chartdiv", {
+  AmCharts.makeChart(id, {
     "type": "pie",
     "theme": "light",
     "dataProvider": [
