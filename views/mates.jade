@@ -26,7 +26,7 @@ block content
     var ctx = document.getElementById("radar").getContext("2d");
     graph.renderRadar(ctx, 'B');
 
-    update = function() {
+    var update = function() {
         var myselect = document.getElementById("players");
         var selected = myselect.options[myselect.selectedIndex].value;
 
