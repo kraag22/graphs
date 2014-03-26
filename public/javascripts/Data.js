@@ -216,7 +216,8 @@ gra.Data.prototype.renderChart = function(ctx, current) {
         "axisAlpha": 0,
         "gridAlpha": 0,
         "position": "left"
-    }
+    },
+    "panEventsEnabled": false
   });
 };
 
