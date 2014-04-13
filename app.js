@@ -47,6 +47,7 @@ app.get('/mates', mates.list);
 
 
 var mongo;
+
 if(process.env.VCAP_SERVICES){
   var env = JSON.parse(process.env.VCAP_SERVICES);
   mongo = env['mongodb2-2.4.8'][0].credentials;
@@ -74,7 +75,8 @@ mongoose.connection.on('connected', function () {
 
 });
 
-mongoose.connection.on('error', function () {
+mongoose.connection.on('error', function (e) {
+  console.log(e);
   console.log('Could not connect to mongo server!');
 });
 
