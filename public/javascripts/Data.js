@@ -66,7 +66,7 @@ gra.Data.prototype.getNumberOfPlays = function() {
 };
 
 gra.Data.prototype.getTotalNumberOfPlays = function() {
-  return 35;
+  return 38;
 };
 
 gra.Data.prototype.renderPie = function(id) {
