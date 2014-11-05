@@ -1,6 +1,5 @@
 var data     = require('../app/data.js');
-var mongo    = require('../app/mongo.js');
-var Q        = require('q');
+var season   = require('../app/season.js');
 
 /*
  * GET home page.
@@ -8,7 +7,7 @@ var Q        = require('q');
 
 exports.index = function(req, res){
 
-  data.get().done(function(data){
+  data.get(season.get()).done(function(data){
     res.render('index', { data: JSON.stringify(data) });
   });
 

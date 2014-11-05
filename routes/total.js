@@ -1,10 +1,9 @@
 var data     = require('../app/data.js');
-var mongo    = require('../app/mongo.js');
-var Q        = require('q');
+var season   = require('../app/season.js');
 
 exports.list = function(req, res){
 
-  data.get().done(function(data){
+  data.get(season.get()).done(function(data){
     res.render('total', { data: JSON.stringify(data) });
   });
 

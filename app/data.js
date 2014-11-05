@@ -4,9 +4,9 @@ var mongo    = require('../app/mongo.js');
 var Q        = require('q');
 
 // decide if download data from mongo or google api
-exports.get = function() {
+exports.get = function(season) {
 
-  return mongo.getTodayData()
+  return mongo.getTodayData(season)
     .then(function(data){
 
     if (data) {
@@ -18,7 +18,7 @@ exports.get = function() {
     else {
       console.log('data.js, FALSE');
 
-      return exports.getApi().then(mongo.saveData);
+      return exports.getApi(season).then(mongo.saveData);
     }
 
   });
@@ -26,15 +26,17 @@ exports.get = function() {
 };
 
 // fetches newest data from google API
-exports.getApi = function() {
+exports.getApi = function(season) {
 
   var deffered = Q.defer();
 
-  appGet.cellsXML('0Ar1Jmgo4O1wrdDVVYjZWRDkxQ1EwY3oyUG16dEZCSVE')
+  appGet.cellsXML('0Ar1Jmgo4O1wrdDVVYjZWRDkxQ1EwY3oyUG16dEZCSVE', season)
   .then(appParse.parseXML)
   .done(function(data) {
-    data = appParse.prepare(data);
-    deffered.resolve(data);
+    var newData = {};
+    newData.dataToSave = appParse.prepare(data);
+    newData.season = season;
+    deffered.resolve(newData);
   });
 
   return deffered.promise;
