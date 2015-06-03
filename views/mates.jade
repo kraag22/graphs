@@ -11,7 +11,7 @@ block content
     div(id="chartdiv" style="height:500px;font-size: 11px;")
 
   script.
-    var graph = new gra.Data(!{data});
+    var graph = new Graphs(!{data});
 
     var players = graph.getPlayers(2);
     var selectedPlayer = "B";
@@ -28,7 +28,7 @@ block content
         select.appendChild(opt);
     }
 
-    var graph = new gra.Data(!{data});
+    var graph = new Graphs(!{data});
     graph.renderChart("chartdiv", selectedPlayer);
 
     var update = function() {

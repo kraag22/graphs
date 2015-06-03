@@ -15,7 +15,7 @@ block content
       div(id="percents" class="completetion")
 
   script.
-    var graph = new gra.Data(!{data});
+    var graph = new Graphs(!{data});
     graph.renderPie('chartdiv');
     document.getElementById("percents").textContent = graph.getSeasonCompletetion() + " %";
 

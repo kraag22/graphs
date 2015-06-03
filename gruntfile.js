@@ -4,7 +4,28 @@ module.exports = function(grunt) {
   // Project Configuration
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    babel: {
+        options: {
+            sourceMap: false
+        },
+        dist: {
+          files: [{
+              "expand": true,
+              "cwd": "public/javascripts",
+              "src": ["*.ec6"],
+              "dest": "public/javascripts/",
+              "ext": ".js"
+          }]
+        }
+    },
     watch: {
+      ec6: {
+        files: ['public/javascripts/**'],
+        tasks: ['babel'],
+        options: {
+          livereload: true,
+        },
+      },
       js: {
         files: ['gruntfile.js', 'app.js', 'app/**/*.js', 'public/javascripts/**'],
         tasks: ['jshint'],
@@ -27,7 +48,7 @@ module.exports = function(grunt) {
     },
     jshint: {
       all: {
-        src: ['gruntfile.js', 'app.js', 'app/**/*.js', 'public/js/**'],
+        src: ['gruntfile.js', 'app.js', 'app/**/*.js', 'public/javascripts/*.ec6'],
         options: {
           jshintrc: true
         }
@@ -62,6 +83,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-nodemon');
   grunt.loadNpmTasks('grunt-concurrent');
+  grunt.loadNpmTasks('grunt-babel');
 
   //Making grunt default to force in order not to break the project.
   grunt.option('force', true);
