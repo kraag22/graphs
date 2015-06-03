@@ -67,7 +67,7 @@ class Graphs{
   }
 
   getTotalNumberOfPlays() {
-    return 38;
+    return 36;
   }
 
   renderPie(id) {

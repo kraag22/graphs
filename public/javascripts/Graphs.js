@@ -76,7 +76,7 @@ var Graphs = (function () {
   }, {
     key: "getTotalNumberOfPlays",
     value: function getTotalNumberOfPlays() {
-      return 38;
+      return 36;
     }
   }, {
     key: "renderPie",
