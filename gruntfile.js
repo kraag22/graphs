@@ -27,7 +27,7 @@ module.exports = function(grunt) {
         },
       },
       js: {
-        files: ['gruntfile.js', 'app.js', 'app/**/*.js', 'public/javascripts/**'],
+        files: ['gruntfile.js', 'app.js', 'app/**/*.js'],
         tasks: ['jshint'],
         options: {
           livereload: true,
@@ -48,7 +48,7 @@ module.exports = function(grunt) {
     },
     jshint: {
       all: {
-        src: ['gruntfile.js', 'app.js', 'app/**/*.js', 'public/javascripts/*.ec6'],
+        src: ['gruntfile.js', 'app.js', 'app/**/*.js'],
         options: {
           jshintrc: true
         }
