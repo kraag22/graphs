@@ -14,10 +14,9 @@ dataSchema.statics.getTodayData = function (season, cb) {
   var end = new Date();
   end.setHours(23,0,0,0);
   var params = {createdAt: {$gte: start, $lt: end}};
-  // add filter to season, if is not first one(that doesnt have season column)
-  if (season !== 0) {
-    params.season = season;
-  }
+  
+  params.season = season;
+  
   this.findOne(params, cb);
 };
 

@@ -10,13 +10,13 @@ exports.get = function(season) {
     .then(function(data){
 
     if (data) {
-      console.log('data.js, TRUE');
+      console.log('use cached data');
       var deffered = Q.defer();
       deffered.resolve(data);
       return deffered.promise;
     }
     else {
-      console.log('data.js, FALSE');
+      console.log('fetching data from api');
 
       return exports.getApi(season).then(mongo.saveData);
     }
