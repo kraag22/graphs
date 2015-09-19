@@ -22,6 +22,7 @@ var http = require('http');
 var path = require('path');
 var mongoose = require('mongoose');
 var reload = require('reload');
+var cookieParser = require('cookie-parser');
 
 var app = express();
 
@@ -32,6 +33,7 @@ app.set('view engine', 'jade');
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
+app.use(cookieParser());
 app.use(express.methodOverride());
 app.use(app.router);
 app.use(require('stylus').middleware(__dirname + '/public'));

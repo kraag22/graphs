@@ -4,12 +4,15 @@ var https   = require('http');
 exports.cellsXML = function (key, season) {
 
   var deffered = Q.defer();
-  var page = 'od6';
+  var page = '1';
 
   console.log('/feeds/cells/'+key+'/od6/public/basic');
 
-  if (season === 1) {
-    page = 'od7';
+  if (season === 2014) {
+    page = '2';
+  }
+  else if (season === 2015) {
+    page = '3';
   }
 
   var options = {
