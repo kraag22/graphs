@@ -2,10 +2,10 @@ extends layout
 
 block content
 
-  if season=1
-    h1(class="section-heading") Season 2014/2015 completetion
-  else
-    h1(class="section-heading") Season 2013/2014 completetion
+  
+  h1(class="section-heading")
+    = 'Season ' + season + '/' + (season+1) + ' completetion'
+  
 
   div(class="col-xs-12 col-lg-8")
     div(id="chartdiv" style="height:500px;font-size: 11px;")

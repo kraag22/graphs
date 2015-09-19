@@ -6,10 +6,24 @@ nav(class='navbar navbar-fixed-top navbar-inverse', role='navigation')
         span.icon-bar
         span.icon-bar
         span.icon-bar
-      a.navbar-brand(href='/') season 2014/2015
+      
+      .dropdown
+        a#dropdownMenu1.navbar-brand.dropdown-toggle(href='/',data-toggle='dropdown', aria-haspopup='true', aria-expanded='true')
+          = 'Season ' + season + '/' + (season+1)
+          span.caret
+        ul.dropdown-menu(aria-labelledby='dropdownMenu1')
+          li
+            a(href='?season=2013') 2013/2014
+          li
+            a(href='?season=2014') 2014/2015
+          li
+            a(href='?season=2015') 2015/2016
+
     // Collect the nav links, forms, and other content for toggling
     .collapse.navbar-collapse.navbar-ex1-collapse
       ul.nav.navbar-nav
+        li
+          a(href='/') home
         li
           a(href='/totals') wins & looses
         li
