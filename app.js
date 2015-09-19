@@ -74,7 +74,7 @@ mongoose.connection.on('connected', function () {
     console.log('Express server listening on port ' + app.get('port'));
   });
 
-  reload(server, app, 800);
+  reload(server, app, 1500);
 
 });
 
