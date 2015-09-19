@@ -32,7 +32,7 @@ var Graphs = (function () {
 
       for (row in this.data_) {
         if (this.dataRegexp.test(row)) {
-          if (row.charAt(0) === "A") {
+          if (row.charAt(0) === 'A') {
             this.numberOfPlays++;
             continue;
           }
@@ -172,14 +172,14 @@ var Graphs = (function () {
       for (var key in data) {
         if (/^[A-Z]{1}$/.test(key) && data.hasOwnProperty(key)) {
 
-          if (data[key]["with"] + data[key]["against"] <= 1) {
+          if (data[key]['with'] + data[key]['against'] <= 1) {
             continue;
           }
 
           var oneData = {};
-          oneData["name"] = this.getPlayerName(key);
-          oneData["with"] = data[key]["with"];
-          oneData["against"] = data[key]["against"];
+          oneData['name'] = this.getPlayerName(key);
+          oneData['with'] = data[key]['with'];
+          oneData['against'] = data[key]['against'];
           dataProvider.push(oneData);
         }
       }
@@ -254,7 +254,7 @@ var Graphs = (function () {
           var row = letter + j;
           var currentRow = current + j;
           // finish when no data is aviable
-          if (this.data_["A" + j] === undefined) {
+          if (this.data_['A' + j] === undefined) {
             break;
           }
           // dont count if player didnt play
