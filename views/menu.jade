@@ -1,24 +1,18 @@
-nav(class='navbar navbar-fixed-top navbar-inverse', role='navigation').
-  <div class="container">
-      <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">season 2014/2015</a>
-      </div>
-
-      <!-- Collect the nav links, forms, and other content for toggling -->
-      <div class="collapse navbar-collapse navbar-ex1-collapse">
-          <ul class="nav navbar-nav">
-              <li><a href="/totals">wins & looses</a>
-              </li>
-              <li><a href="/mates">teams</a>
-              </li>
-          </ul>
-      </div>
-      <!-- /.navbar-collapse -->
-  </div>
-  <!-- /.container -->
+nav(class='navbar navbar-fixed-top navbar-inverse', role='navigation')
+  .container
+    .navbar-header
+      button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-ex1-collapse')
+        span.sr-only Toggle navigation
+        span.icon-bar
+        span.icon-bar
+        span.icon-bar
+      a.navbar-brand(href='/') season 2014/2015
+    // Collect the nav links, forms, and other content for toggling
+    .collapse.navbar-collapse.navbar-ex1-collapse
+      ul.nav.navbar-nav
+        li
+          a(href='/totals') wins & looses
+        li
+          a(href='/mates') teams
+    // /.navbar-collapse
+  // /.container
