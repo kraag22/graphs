@@ -21,6 +21,7 @@ var mates = require('./routes/mates');
 var http = require('http');
 var path = require('path');
 var mongoose = require('mongoose');
+var reload = require('reload');
 
 var app = express();
 
@@ -69,9 +70,11 @@ console.log(mongoUrl);
 mongoose.connection.on('connected', function () {
   console.log('Connected to mongo server.');
 
-  http.createServer(app).listen(app.get('port'), function(){
+  var server = http.createServer(app).listen(app.get('port'), function(){
     console.log('Express server listening on port ' + app.get('port'));
   });
+
+  reload(server, app, 800);
 
 });
 
