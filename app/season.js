@@ -1,6 +1,14 @@
 
+function getCurrent() {
+  var now = new Date();
+  var year = now.getFullYear();
+  var month = now.getMonth() + 1;
+
+  return ( month > 8 ? year : (year - 1));
+}
+
 //default season
-var season = 2015;
+var season = getCurrent();
 
 // return currently active season
 exports.get = function () {
@@ -20,3 +28,13 @@ exports.set = function (req, res) {
 	}
 
 };
+
+exports.getSeasons = function() {
+  var arr = [];
+
+  for (var i = 2013; i <= getCurrent(); i++) {
+    arr.push(i);
+  }
+
+  return arr;
+}
