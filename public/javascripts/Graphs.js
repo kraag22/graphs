@@ -1,8 +1,8 @@
-"use strict";
+'use strict';
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 var Graphs = (function () {
   function Graphs(data) {
@@ -19,7 +19,7 @@ var Graphs = (function () {
   }
 
   _createClass(Graphs, [{
-    key: "init",
+    key: 'init',
     value: function init() {
       console.log(this.data_);
       var row;
@@ -40,17 +40,24 @@ var Graphs = (function () {
           if (this.players_[row.charAt(0)] === undefined) {
             console.log(row);
           } else {
-            if (this.data_[row] == 1) {
-              this.players_[row.charAt(0)].wins++;
-            } else if (this.data_[row] == 0) {
+            var current = this.parseNumber(this.data_[row]);
+
+            if (current === 0) {
               this.players_[row.charAt(0)].loses++;
+            } else if (current === 1 || current === 0.5) {
+              this.players_[row.charAt(0)].wins += current;
             }
           }
         }
       }
     }
   }, {
-    key: "getPlayers",
+    key: 'parseNumber',
+    value: function parseNumber(str) {
+      return Number(str.replace(',', '.'));
+    }
+  }, {
+    key: 'getPlayers',
     value: function getPlayers(minPlays) {
       var plrs = {};
 
@@ -64,22 +71,22 @@ var Graphs = (function () {
       return plrs;
     }
   }, {
-    key: "getPlayerName",
+    key: 'getPlayerName',
     value: function getPlayerName(index) {
       return this.players_[index].name.substring(0, 10);
     }
   }, {
-    key: "getNumberOfPlays",
+    key: 'getNumberOfPlays',
     value: function getNumberOfPlays() {
       return this.numberOfPlays;
     }
   }, {
-    key: "getTotalNumberOfPlays",
+    key: 'getTotalNumberOfPlays',
     value: function getTotalNumberOfPlays() {
       return 36;
     }
   }, {
-    key: "renderPie",
+    key: 'renderPie',
     value: function renderPie(id) {
 
       AmCharts.makeChart(id, {
@@ -98,12 +105,12 @@ var Graphs = (function () {
       });
     }
   }, {
-    key: "getSeasonCompletetion",
+    key: 'getSeasonCompletetion',
     value: function getSeasonCompletetion() {
       return Math.round(100 * this.getNumberOfPlays() / this.getTotalNumberOfPlays());
     }
   }, {
-    key: "renderBar",
+    key: 'renderBar',
     value: function renderBar(id) {
       var data = [];
       console.log(this.players_);
@@ -163,7 +170,7 @@ var Graphs = (function () {
       });
     }
   }, {
-    key: "renderChart",
+    key: 'renderChart',
     value: function renderChart(ctx, current) {
 
       var data = this.statsDataForPlayer(current);
@@ -230,7 +237,7 @@ var Graphs = (function () {
       });
     }
   }, {
-    key: "statsDataForPlayer",
+    key: 'statsDataForPlayer',
 
     // current - char of currently counted player
     value: function statsDataForPlayer(current) {
@@ -248,7 +255,7 @@ var Graphs = (function () {
           continue;
         }
 
-        results[letter] = { "with": 0, against: 0 };
+        results[letter] = { 'with': 0, against: 0 };
 
         for (var j = 2; j < 1000; j++) {
           var row = letter + j;
@@ -263,7 +270,7 @@ var Graphs = (function () {
           }
 
           if (this.data_[row] == this.data_[currentRow]) {
-            results[letter]["with"]++;
+            results[letter]['with']++;
           } else if (this.data_[row] !== undefined) {
             results[letter].against++;
           }

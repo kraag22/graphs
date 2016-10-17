@@ -33,15 +33,20 @@ class Graphs{
           console.log(row);
         }
         else {
-          if (this.data_[row] == 1) {
-            this.players_[row.charAt(0)].wins++;
-          }
-          else if (this.data_[row] == 0) {
+          var current = this.parseNumber(this.data_[row]);
+
+          if (current === 0) {
             this.players_[row.charAt(0)].loses++;
+          } else if (current === 1 || current === 0.5) {
+            this.players_[row.charAt(0)].wins += current;
           }
         }
       }
     }
+  }
+
+  parseNumber(str) {
+    return Number(str.replace(',', '.'));
   }
 
   getPlayers(minPlays) {
@@ -266,4 +271,4 @@ class Graphs{
   }
 
 }
-    
+

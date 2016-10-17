@@ -37,4 +37,4 @@ exports.getSeasons = function() {
   }
 
   return arr;
-}
+};
