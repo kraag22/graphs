@@ -11,7 +11,6 @@
     "jade": "1.2.0",
     "mongodb": "2.0.43",
     "mongoose": "4.1.7",
-    "q": "~0.9.7",
     "stylus": "0.42.2",
     "xml2js": "~0.2.8"
   },
@@ -20,7 +19,6 @@
     "grunt-contrib-watch": "latest",
     "grunt-contrib-jshint": "latest",
     "grunt-nodemon": "0.2.0",
-    "grunt-concurrent": "latest",
-    "reload": "~0.1.0"
+    "grunt-concurrent": "latest"
   }
 }

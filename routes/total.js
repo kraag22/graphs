@@ -5,7 +5,7 @@ exports.list = function(req, res){
 
   season.set(req, res);
 
-  data.get(season.get()).done(function(data){
+  data.get(season.get()).then(function(data){
     res.render('total', {
       data: JSON.stringify(data),
       season:season.get(),

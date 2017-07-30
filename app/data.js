@@ -1,7 +1,6 @@
 var appGet   = require('../app/get.js');
 var appParse = require('../app/parse.js');
 var mongo    = require('../app/mongo.js');
-var Q        = require('q');
 
 // decide if download data from mongo or google api
 exports.get = function(season) {
@@ -11,9 +10,9 @@ exports.get = function(season) {
 
     if (data) {
       console.log('use cached data');
-      var deffered = Q.defer();
-      deffered.resolve(data);
-      return deffered.promise;
+      return new Promise((resolve, reject) => {
+        resolve(data)
+      })
     }
     else {
       console.log('fetching data from api');
@@ -27,19 +26,17 @@ exports.get = function(season) {
 
 // fetches newest data from google API
 exports.getApi = function(season) {
-
-  var deffered = Q.defer();
-
-  appGet.cellsXML('0Ar1Jmgo4O1wrdDVVYjZWRDkxQ1EwY3oyUG16dEZCSVE', season)
-  .then(appParse.parseXML)
-  .done(function(data) {
-    var newData = {};
-    newData.dataToSave = appParse.prepare(data);
-    newData.season = season;
-    deffered.resolve(newData);
-  });
-
-  return deffered.promise;
+  const promise = new Promise((resolve, reject) => {
+    appGet.cellsXML('0Ar1Jmgo4O1wrdDVVYjZWRDkxQ1EwY3oyUG16dEZCSVE', season)
+    .then(appParse.parseXML)
+    .then(function(data) {
+      var newData = {};
+      newData.dataToSave = appParse.prepare(data);
+      newData.season = season;
+      resolve(newData);
+    });
+  })
+  return promise
 };
 
 // returns data from stored variable

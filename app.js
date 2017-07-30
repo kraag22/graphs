@@ -21,7 +21,6 @@ var mates = require('./routes/mates');
 var http = require('http');
 var path = require('path');
 var mongoose = require('mongoose');
-var reload = require('reload');
 var cookieParser = require('cookie-parser');
 
 var app = express();
@@ -75,9 +74,6 @@ mongoose.connection.on('connected', function () {
   var server = http.createServer(app).listen(app.get('port'), function(){
     console.log('Express server listening on port ' + app.get('port'));
   });
-
-  reload(server, app, 1500);
-
 });
 
 mongoose.connection.on('error', function (e) {
