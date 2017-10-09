@@ -4,15 +4,20 @@ exports.cellsXML = function (key, season) {
   const promise = new Promise((resolve, reject) => {
     var page = '1';
 
-    console.log('/feeds/cells/'+key+'/od6/public/basic');
-
     if (season === 2014) {
       page = '2';
     }
     else if (season === 2015) {
       page = '3';
     }
+    else if (season === 2016) {
+      page = '4';
+    }
+    else if (season === 2017) {
+      page = '5';
+    }
 
+    console.log('/feeds/cells/'+key+'/'+page+'/public/basic');
     var options = {
       host: 'spreadsheets.google.com',
       port: 80,
