@@ -4,17 +4,9 @@ exports.cellsXML = function (key, season) {
   const promise = new Promise((resolve, reject) => {
     var page = '1';
 
-    if (season === 2014) {
-      page = '2';
-    }
-    else if (season === 2015) {
-      page = '3';
-    }
-    else if (season === 2016) {
-      page = '4';
-    }
-    else if (season === 2017) {
-      page = '5';
+    if (season > 2013) {
+      // 2014 = 2, 2018 = 6
+      page = season - 2012;
     }
 
     console.log('/feeds/cells/'+key+'/'+page+'/public/basic');
