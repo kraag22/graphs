@@ -13,7 +13,6 @@ class Graphs{
   }
 
   init() {
-    console.log(this.data_);
     var row;
 
     for (row in this.data_) {
@@ -102,7 +101,7 @@ class Graphs{
 
   renderBar(id) {
     var data = [];
-    console.log(this.players_);
+
     for (var playerIndex in this.players_) {
       var player = this.players_[playerIndex];
       if (player.loses + player.wins > 1) {
@@ -272,3 +271,7 @@ class Graphs{
 
 }
 
+try {
+  module.exports.Graphs = Graphs;
+} catch (error) {
+}

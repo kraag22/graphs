@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "test": "jest --watchAll",
+    "test-ci": "jest"
   },
   "dependencies": {
     "cookie-parser": "^1.4.0",
@@ -18,6 +20,7 @@
     "grunt": "^1.0.4",
     "grunt-contrib-jshint": "latest",
     "grunt-contrib-watch": "latest",
-    "grunt-nodemon": "0.2.0"
+    "grunt-nodemon": "0.2.0",
+    "jest": "^24.9.0"
   }
 }
