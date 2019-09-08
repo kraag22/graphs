@@ -40,7 +40,7 @@ module.exports = function(grunt) {
           args: [],
           ignore: ['public/**'],
           ext: 'js',
-          nodeArgs: ['--debug'],
+          nodeArgs: ['--inspect'],
           delayTime: 1,
           env: {
             PORT: 3000
@@ -48,26 +48,18 @@ module.exports = function(grunt) {
           cwd: __dirname
         }
       }
-    },
-    concurrent: {
-      tasks: ['nodemon', 'watch'],
-      options: {
-        logConcurrentOutput: true
-      }
-    },
+    }
   });
 
   //Load NPM tasks
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-nodemon');
-  grunt.loadNpmTasks('grunt-concurrent');
 
   //Making grunt default to force in order not to break the project.
   grunt.option('force', true);
 
   //Default task(s).
-  grunt.registerTask('default', ['jshint', 'concurrent']);
-
+  grunt.registerTask('default', ['jshint', 'nodemon', 'watch']);
 
 };
