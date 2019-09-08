@@ -13,5 +13,10 @@ start with:
 
 
 ### development info
+run grunt for jshint and autoreload
+
+    grunt
+    
+First 2 weeks arn't shown in stats!
 
 `worksheet id` is worksheet order in UI
