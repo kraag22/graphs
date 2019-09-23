@@ -10,9 +10,9 @@
   "dependencies": {
     "cookie-parser": "^1.4.0",
     "express": "^3.20.3",
-    "jade": "1.2.0",
     "mongodb": "2.0.43",
     "mongoose": "4.1.7",
+    "pug": "^2.0.4",
     "stylus": "0.42.2",
     "xml2js": "~0.2.8"
   },

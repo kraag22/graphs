@@ -12,7 +12,7 @@ nav(class='navbar navbar-fixed-top navbar-inverse', role='navigation')
           = 'Season ' + season + '/' + (season+1)
           span.caret
         ul.dropdown-menu(aria-labelledby='dropdownMenu1')
-          - for item in seasons
+          for item in seasons
             li
               a(href='?season=#{item}')
                 = item + '/' + (item + 1)
