@@ -34,5 +34,6 @@
         "expect"
     ],
     "devel": true, // Allow development statements e.g. `console.log();`.
-    "noempty": true // Prohibit use of empty blocks.
+    "noempty": true, // Prohibit use of empty blocks.
+    "asi": true // semicolons
 }
