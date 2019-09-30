@@ -15,6 +15,11 @@ var generate_mongo_url = function(obj){
  */
 
 var express = require('express');
+var favicon = require('serve-favicon')
+var bodyParser = require('body-parser')
+var morgan = require('morgan')
+var errorhandler = require('errorhandler')
+var router = express.Router()
 var routes = require('./routes');
 var total = require('./routes/total');
 var mates = require('./routes/mates');
@@ -22,6 +27,7 @@ var http = require('http');
 var path = require('path');
 var mongoose = require('mongoose');
 var cookieParser = require('cookie-parser');
+var jsonParser = bodyParser.json()
 
 var app = express();
 
@@ -29,24 +35,22 @@ var app = express();
 app.set('port', process.env.VCAP_APP_PORT || 3000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'pug');
-app.use(express.favicon());
-app.use(express.logger('dev'));
-app.use(express.bodyParser());
+app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.png')))
+app.use(morgan('dev'))
 app.use(cookieParser());
-app.use(express.methodOverride());
-app.use(app.router);
 app.use(require('stylus').middleware(__dirname + '/public'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
 if ('development' === app.get('env')) {
-  app.use(express.errorHandler());
+  app.use(errorhandler())
 }
 
-app.get('/', routes.index);
-app.get('/totals', total.list);
-app.get('/mates', mates.list);
+router.get('/', routes.index);
+router.get('/totals', total.list);
+router.get('/mates', mates.list);
 
+app.use(router)
 
 var mongo;
 
