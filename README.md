@@ -1,6 +1,7 @@
+[![dependencies Status](https://david-dm.org/kraag22/graphs/status.svg)](https://david-dm.org/kraag22/graphs)
+
 graphs
 ======
-
 google spreadsheet api
 node express framework
 graphs
