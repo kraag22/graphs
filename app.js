@@ -85,4 +85,6 @@ mongoose.connection.on('error', function (e) {
   console.log('Could not connect to mongo server!');
 });
 
-mongoose.connect(mongoUrl);
+mongoose.set('useUnifiedTopology', true)
+mongoose.set('useNewUrlParser', true)
+mongoose.connect(mongoUrl)
