@@ -2,10 +2,10 @@ extends layout
 
 block content
 
-  
+
   h1(class="section-heading")
     = 'Season ' + season + '/' + (season+1) + ' completetion'
-  
+
 
   div(class="col-xs-12 col-lg-8")
     div(id="chartdiv" style="height:500px;font-size: 11px;")
@@ -16,7 +16,7 @@ block content
 
   script.
     var graph = new Graphs(!{data});
-    graph.renderPie('chartdiv');
+    graph.renderPie('chartdiv', !{season});
     document.getElementById("percents").textContent = graph.getSeasonCompletetion() + " %";
 
 
