@@ -24,4 +24,4 @@ First 2 weeks arn't shown in stats!
 
 ### deploy via ansible
 
-   ./run.sh --tags graphs
+    ./run.sh --tags graphs
