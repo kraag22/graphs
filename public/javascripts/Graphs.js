@@ -74,20 +74,28 @@ class Graphs{
     return 36;
   }
 
-  renderPie(id) {
+  renderPie(id, season) {
+    var data = [
+      {
+        "title": "remains",
+        "days": this.getTotalNumberOfPlays() - this.getNumberOfPlays()
+      }, {
+        "title": "played",
+        "days": this.getNumberOfPlays()
+      }
+    ]
+
+    if (season == 2019) {
+      data.push({
+        "title": "Corona virus",
+        "days": 10
+      })
+    }
 
     AmCharts.makeChart(id, {
       "type": "pie",
       "theme": "light",
-      "dataProvider": [
-        {
-          "title": "remains",
-          "days": this.getTotalNumberOfPlays() - this.getNumberOfPlays()
-        }, {
-          "title": "played",
-          "days": this.getNumberOfPlays()
-        }
-      ],
+      "dataProvider": data,
       "valueField": "days",
       "titleField": "title",
       "panEventsEnabled": false
