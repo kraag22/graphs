@@ -21,3 +21,7 @@ run grunt for jshint and autoreload
 First 2 weeks arn't shown in stats!
 
 `worksheet id` is worksheet order in UI
+
+### deploy via ansible
+
+   ./run.sh --tags graphs
