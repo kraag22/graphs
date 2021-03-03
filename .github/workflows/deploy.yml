@@ -2,11 +2,11 @@
 
 name: Deploy
 
-# Controls when the action will run. 
+# Controls when the action will run.
 on:
   # Triggers the workflow on push or pull request events but only for the workflow branch
   push:
-    branches: [ workflow ]
+    branches: [ master ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -21,12 +21,19 @@ jobs:
           repository: kraag22/ansible
           path: ansible
 
-      - name: Run a one-line script
-        run: cat ./ansible/site.yml
+      - name: Ansible version
+        run: ansible --version
 
-      - name: Run a multi-line script
-        run: |
-          ls ./
-          ls ./ansible
-
-
+      - name: Run ansible
+        uses: kraag22/action-ansible-playbook@v2.2.0
+        with:
+          playbook: site.yml
+          directory: ./ansible/
+          requirements: requirements.yml
+          key: ${{secrets.PRIVATE_KEY}}
+          inventory: |
+            [ocean]
+            ${{secrets.TARGET_IP}}    ansible_user=root
+          vault_password: ${{secrets.VAULT_PASSWORD}}
+          options: |
+            --tags graphs
