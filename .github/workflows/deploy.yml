@@ -1,0 +1,32 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Deploy
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the workflow branch
+  push:
+    branches: [ workflow ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: kraag22/ansible
+          path: ansible
+
+      - name: Run a one-line script
+        run: cat ./ansible/site.yml
+
+      - name: Run a multi-line script
+        run: |
+          ls ./
+          ls ./ansible
+
+
