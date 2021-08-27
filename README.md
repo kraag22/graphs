@@ -23,5 +23,5 @@ First 2 weeks arn't shown in stats!
 `worksheet id` is worksheet order in UI
 
 ### deploy via ansible
-
+PRs are automatically deployed with Github Actions (.github folder)
     ./run.sh --tags graphs
