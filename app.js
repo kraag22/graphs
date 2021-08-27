@@ -29,6 +29,7 @@ var mongoose = require('mongoose');
 var cookieParser = require('cookie-parser');
 var jsonParser = bodyParser.json()
 
+require('dotenv').config();
 var app = express();
 
 // all environments

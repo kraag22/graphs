@@ -55,7 +55,7 @@ exports.saveData = function(data) {
     newData.markModified('data');
 
     newData.save(function() {
-      console.log('returned from saveData()');
+      console.log('Data saved to MongoDB');
       resolve(data.dataToSave);
     });
   })
