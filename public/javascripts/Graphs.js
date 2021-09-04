@@ -75,20 +75,25 @@ class Graphs{
   }
 
   renderPie(id, season) {
+    let coronaMissedDays = 0
+    if (season == 2019 || season == 2020) {
+      coronaMissedDays = season == 2019 ? 10 : 24
+    }
+
     var data = [
       {
         "title": "remains",
-        "days": this.getTotalNumberOfPlays() - this.getNumberOfPlays()
+        "days": this.getTotalNumberOfPlays() - this.getNumberOfPlays() - coronaMissedDays
       }, {
         "title": "played",
         "days": this.getNumberOfPlays()
       }
     ]
 
-    if (season == 2019) {
+    if (coronaMissedDays != 0) {
       data.push({
         "title": "Corona virus",
-        "days": 10
+        "days": coronaMissedDays
       })
     }
 
