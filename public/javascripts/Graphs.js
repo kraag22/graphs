@@ -29,11 +29,10 @@ class Graphs{
         }
 
         if (this.players_[row.charAt(0)] === undefined) {
-          console.log(row);
+          console.log("Player undefined", row);
         }
         else {
           var current = this.parseNumber(this.data_[row]);
-
           if (current === 0) {
             this.players_[row.charAt(0)].loses++;
           } else if (current === 1 || current === 0.5) {
@@ -45,7 +44,7 @@ class Graphs{
   }
 
   parseNumber(str) {
-    return Number(str.replace(',', '.'));
+    return str ? Number(str.replace(',', '.')) : undefined;
   }
 
   getPlayers(minPlays) {
