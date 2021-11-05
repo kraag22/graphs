@@ -1,6 +1,4 @@
-
-class Graphs{
-
+class Graphs {
   constructor(data) {
     this.data_ = data;
     this.players_ = {};
@@ -8,6 +6,11 @@ class Graphs{
     this.dataRegexp = /[A-Z]{1}[0-9]{1,3}/;
     this.plays_ = [];
     this.numberOfPlays = 0;
+
+    this.TIE = 0.5
+    this.WIN = 1
+    this.LOSS = 0
+    this.ABSENT = -1
 
     this.init();
   }
@@ -61,8 +64,30 @@ class Graphs{
 
   }
 
+  gameResultForPlayer(playerLetter, gameNumber) {
+    const tableId = playerLetter + gameNumber
+    if (!Object.keys(this.data_).includes(tableId)) {
+      return this.ABSENT
+    }
+    switch(this.parseNumber(this.data_[tableId])) {
+      case this.WIN: {
+        return this.WIN
+        break
+      }
+      case this.TIE: {
+        return this.TIE
+        break
+      }
+      case this.LOSS: {
+        return this.LOSS
+        break
+      }
+    }
+    return this.ABSENT
+  }
+
   getPlayerName(index) {
-    return this.players_[index].name.substring(0,10);
+    return this.players_[index] ? this.players_[index].name.substring(0,10) : false
   }
 
   getNumberOfPlays() {
@@ -71,6 +96,52 @@ class Graphs{
 
   getTotalNumberOfPlays() {
     return 36;
+  }
+
+  getActiveColumnsLetters() {
+    // filter columns on first row and then returns array of first letters
+    return Object.keys(this.data_).filter(key => key[1] == 1 && key.length == 2).map(key => key[0])
+  }
+
+  getIndexOfLastGame() {
+    let index = 0
+    const allRowNumbers = Object.keys(this.data_)
+      .filter(key => key[0] == 'A')
+      .map(key => key.substr(1))
+      .map(key => parseInt(key))
+    const distinctRowNumbers = new Set(allRowNumbers)
+    distinctRowNumbers.forEach(row => {
+      if (row > index) {
+        index = row
+      }
+    })
+    return index
+  }
+
+  getWithAgainstStat(playerA, playerB) {
+    let playedWith = 0
+    let playedAgainst = 0
+
+    for (let i = 2; i <= this.getIndexOfLastGame(); i++) {
+      const resultA = this.gameResultForPlayer(playerA, i)
+      const resultB = this.gameResultForPlayer(playerB, i)
+
+      if (resultA === this.ABSENT || resultB === this.ABSENT) {
+        continue
+      }
+
+      if (resultA === resultB) {
+        playedWith++
+      }
+      else {
+        playedAgainst++
+      }
+    }
+    return {with: playedWith, against: playedAgainst}
+  }
+
+  getSeasonCompletetion() {
+    return Math.round(100 * this.getNumberOfPlays() / this.getTotalNumberOfPlays());
   }
 
   renderPie(id, season) {
@@ -107,10 +178,6 @@ class Graphs{
 
   }
 
-  getSeasonCompletetion() {
-    return Math.round(100 * this.getNumberOfPlays() / this.getTotalNumberOfPlays());
-  }
-
   renderBar(id) {
     var data = [];
 
@@ -124,8 +191,6 @@ class Graphs{
         });
       }
     }
-
-    console.log(data);
 
     var chart = AmCharts.makeChart(id, {
       "type": "serial",
@@ -172,7 +237,7 @@ class Graphs{
 
   renderChart(ctx, current) {
 
-    var data = this.statsDataForPlayer(current);
+    var data = this.matesDataForPlayer(current);
     var dataProvider = [];
 
     for (var key in data) {
@@ -237,48 +302,18 @@ class Graphs{
     });
   };
 
-  // current - char of currently counted player
-  statsDataForPlayer(current) {
-
+  // playerLetter - char of currently counted player
+  matesDataForPlayer(playerLetter) {
     var results = {};
-    // from B to last existant letter
-    for (var i = 66; i<100; i++) {
-      var letter = String.fromCharCode(i);
-      if (this.players_[letter] === undefined) {
-        break;
+    let letters = this.getActiveColumnsLetters().filter(char => char != 'A' && char != playerLetter)
+    letters.forEach(letter => {
+      if (!this.getPlayerName(letter)) {
+        return results
       }
+      results[letter] = this.getWithAgainstStat(playerLetter, letter)
+    })
 
-      // skip actually counted player
-      if (letter === current) {
-        continue;
-      }
-
-      results[letter] = {with:0, against: 0};
-
-      for (var j = 2; j < 1000; j++) {
-        var row = letter+j;
-        var currentRow = current+j;
-        // finish when no data is aviable
-        if (this.data_['A'+j] === undefined) {
-          break;
-        }
-        // dont count if player didnt play
-        if (this.data_[currentRow] === undefined) {
-          continue;
-        }
-
-        if (this.data_[row] == this.data_[currentRow]) {
-          results[letter].with++;
-        }
-        else if (this.data_[row] !== undefined) {
-          results[letter].against++;
-        }
-
-      }
-
-    }
-
-    return results;
+    return results
   }
 
 }
