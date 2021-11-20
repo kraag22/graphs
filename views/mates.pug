@@ -1,11 +1,12 @@
 extends layout
 
 block content
-  h1 Who played with
+  h1 Player
     select(id="players" onchange="update();" class="player-select")
-
-
-
+    select(id="operations" onchange="updateOperation();" class="player-select")
+      option(value="played" text="played" selected) played
+      option(value="succeeded" text="succeeded") succeeded
+    |  with
 
   div(class="col-xs-12 col-sm-10 col-sm-offset-1")
     div(id="chartdiv" style="height:500px;font-size: 11px;")
@@ -15,10 +16,10 @@ block content
 
     var players = graph.getPlayers(2);
     var selectedPlayer = "B";
+    var selectedOperation = "played";
     var select = document.getElementById('players');
 
     for (var player in players) {
-        console.log(player);
         var opt = document.createElement("option");
         opt.value = player;
         opt.text = players[player];
@@ -29,10 +30,16 @@ block content
     }
 
     var graph = new Graphs(!{data});
-    graph.renderChart("chartdiv", selectedPlayer);
+    graph.renderMatesChart("chartdiv", selectedPlayer, selectedOperation);
 
     var update = function() {
         var myselect = document.getElementById("players");
-        var selected = myselect.options[myselect.selectedIndex].value;
-        graph.renderChart("chartdiv", selected);
+        selectedPlayer = myselect.options[myselect.selectedIndex].value;
+        graph.renderMatesChart("chartdiv", selectedPlayer, selectedOperation);
+    };
+
+    var updateOperation = function() {
+        var myselect = document.getElementById("operations");
+        selectedOperation = myselect.options[myselect.selectedIndex].value;
+        graph.renderMatesChart("chartdiv", selectedPlayer, selectedOperation);
     };

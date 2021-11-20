@@ -1,7 +1,7 @@
 const {Graphs} = require('../public/javascripts/Graphs.js')
 
 let defaultData = {
-  "A1": "", "B1": "Martin", "C1": "Michal", "D1": "Martina", "E1": "Havli", "F1": "Vojta m", "G1": "Pavel", "H1": "Víťa", "I1": "Vojta ", "J1": "Tomas K",
+  "A1": "", "B1": "Martin", "C1": "Michal", "D1": "Martina", "E1": "Havli", "F1": "Vojta m", "G1": "Pavel", "H1": "Víťa", "I1": "Vojta", "J1": "Tomas K",
   "A2": "13.9.2021", "B2": "", "C2": "0", "D2": "", "E2": "1", "F2": "1", "G2": "0", "H2": "1", "I2": "", "J2": "0",
   "A3": "20.9.2021", "B3": "0", "C3": "0", "D3": "0", "E3": "1", "F3": "0", "G3": "1", "H3": "1", "I3": "1", "J3": "0",
   "A4": "4.10.2021", "B4": "0", "C4": "1", "D4": "1", "E4": "0", "F4": "", "G4": "0", "H4": "", "I4": "1",
@@ -47,9 +47,9 @@ describe('Graphs', () => {
 
   it('getWithAgainstStat() should work', () => {
     const g = new Graphs(defaultData)
-    expect(g.getWithAgainstStat('B', 'C')).toEqual({with:2, against: 6})
-    expect(g.getWithAgainstStat('Q', 'C')).toEqual({with:0, against: 0})
-    expect(g.getWithAgainstStat('E', 'C')).toEqual({with:7, against: 4})
+    expect(g.getWithAgainstStat('B', 'C')).toEqual({with:2, against: 6, lostWith: 1, wonWith: 0})
+    expect(g.getWithAgainstStat('Q', 'C')).toEqual({with:0, against: 0, lostWith: 0, wonWith: 0})
+    expect(g.getWithAgainstStat('E', 'C')).toEqual({with:7, against: 4, lostWith: 0, wonWith: 6})
   })
 
   it('gameResultForPlayer() should work', () => {
@@ -67,7 +67,7 @@ describe('Graphs', () => {
 })
 
 describe('mates', () => {
-  it('matesDataForPlayer() should work', async () => {
+  it('matesDataForPlayer() should work', () => {
     const g = new Graphs(defaultData)
     const result = g.matesDataForPlayer('B')
     expect(result["E"].with).toEqual(2)
@@ -76,17 +76,35 @@ describe('mates', () => {
     expect(result["J"].against).toEqual(0)
   })
 
-  it('matesDataForPlayer() should fail gracefully', async () => {
+  it('matesDataForPlayer() should fail gracefully', () => {
     const g = new Graphs(defaultData)
     const result = g.matesDataForPlayer('Q')
-    expect(result['B']).toEqual({with:0, against: 0})
-    expect(result['I']).toEqual({with:0, against: 0})
-    expect(result['E']).toEqual({with:0, against: 0})
+
+    expect(result['B']).toEqual({with:0, against: 0, lostWith:0, wonWith: 0})
+    expect(result['I']).toEqual({with:0, against: 0, lostWith:0, wonWith: 0})
+    expect(result['E']).toEqual({with:0, against: 0, lostWith:0, wonWith: 0})
+  })
+
+  it('prepareMatesData should work for -> played', () => {
+    const g = new Graphs(defaultData)
+    const data = g.matesDataForPlayer('B')
+    const result = g.prepareMatesData(data, 'played')
+
+    expect(result.length).toEqual(8)
+    expect(result[0]).toEqual({name: 'Michal', first: 6, second: 2})
+    expect(result[6]).toEqual({name: 'Vojta', first: 2, second: 0})
+  })
+
+  it('prepareMatesData should work for -> succeeded', () => {
+    const g = new Graphs(defaultData)
+    const data = g.matesDataForPlayer('G')
+    const result = g.prepareMatesData(data, 'succeeded')
+
+    expect(result.length).toEqual(8)
+    expect(result[4]).toEqual({name: 'Vojta m', first: 0, second: 0})
+    expect(result[7]).toEqual({name: 'Tomas K', first: 2, second: 0})
   })
 })
-
-
-
 
 
 
