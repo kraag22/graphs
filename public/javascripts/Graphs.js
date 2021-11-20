@@ -121,6 +121,8 @@ class Graphs {
   getWithAgainstStat(playerA, playerB) {
     let playedWith = 0
     let playedAgainst = 0
+    let wonWith = 0
+    let lostWith = 0
 
     for (let i = 2; i <= this.getIndexOfLastGame(); i++) {
       const resultA = this.gameResultForPlayer(playerA, i)
@@ -132,12 +134,14 @@ class Graphs {
 
       if (resultA === resultB) {
         playedWith++
+        if (resultA === this.WIN) { wonWith++ }
+        if (resultA === this.LOSS) { lostWith++ }
       }
       else {
         playedAgainst++
       }
     }
-    return {with: playedWith, against: playedAgainst}
+    return {with: playedWith, against: playedAgainst, wonWith: wonWith, lostWith: lostWith}
   }
 
   getSeasonCompletetion() {
@@ -235,25 +239,11 @@ class Graphs {
     });
   };
 
-  renderChart(ctx, current) {
-
-    var data = this.matesDataForPlayer(current);
-    var dataProvider = [];
-
-    for (var key in data) {
-      if ( /^[A-Z]{1}$/.test(key) && data.hasOwnProperty(key)) {
-
-        if (data[key]['with'] + data[key]['against'] <= 1) {
-          continue;
-        }
-
-        var oneData = {};
-        oneData['name'] = this.getPlayerName(key);
-        oneData['with'] = data[key]['with'];
-        oneData['against'] = data[key]['against'];
-        dataProvider.push(oneData);
-      }
-    }
+  renderMatesChart(ctx, current, operation) {
+    const data = this.matesDataForPlayer(current)
+    const dataProvider = this.prepareMatesData(data, operation)
+    const firstLabel = operation === 'played' ? 'Played against' : 'Lost with'
+    const secondLabel = operation === 'played' ? 'Played with' : 'Won with'
 
     AmCharts.makeChart(ctx, {
       "type": "serial",
@@ -276,20 +266,20 @@ class Graphs {
           "fillAlphas": 0.8,
           "labelText": "[[value]]",
           "lineAlpha": 0.3,
-          "title": "Played against",
+          "title": firstLabel,
           "type": "column",
           "color": "#000000",
-          "valueField": "against"
+          "valueField": "first"
       },
       {
           "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
           "fillAlphas": 0.8,
           "labelText": "[[value]]",
           "lineAlpha": 0.3,
-          "title": "Played with",
+          "title": secondLabel,
           "type": "column",
           "color": "#000000",
-          "valueField": "with"
+          "valueField": "second"
       }],
       "categoryField": "name",
       "categoryAxis": {
@@ -316,6 +306,23 @@ class Graphs {
     return results
   }
 
+  prepareMatesData(data, operation = 'played') {
+    const result = []
+    const firstKey = operation === 'played' ? 'against' : 'lostWith'
+    const secondKey = operation === 'played' ? 'with' : 'wonWith'
+    for (var key in data) {
+      if (operation === 'played' && (data[key][secondKey] + data[key][firstKey] <= 1)) {
+        continue
+      }
+
+      const oneData = {}
+      oneData['name'] = this.getPlayerName(key)
+      oneData['first'] = data[key][firstKey]
+      oneData['second'] = data[key][secondKey]
+      result.push(oneData)
+    }
+    return result
+  }
 }
 
 try {
