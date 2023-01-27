@@ -1,7 +1,7 @@
 var data     = require('../app/data.js');
 var season   = require('../app/season.js');
-const Cache = require('file-system-cache').default
-const cache = Cache()
+const NodeCache = require( "node-cache" );
+const cache = new NodeCache( { stdTTL: 12*60*60, checkperiod: 4*60*60 } );
 
 exports.list = function(req, res){
 
