@@ -18,8 +18,8 @@ async function render(req, res, view) {
   res.render(view, getSettings(seasonData))
 }
 
-exports.index = async function(req, res) {
-  await render(req, res, 'index')
+exports.completion = async function(req, res) {
+  await render(req, res, 'completion')
 }
 
 exports.mates = async function(req, res) {

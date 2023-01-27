@@ -1,6 +1,6 @@
 const seasonData = require('./seasonData.json')
 
-class MockSheetsApi {
+class FakeSheetsApi {
   constructor(season) {
     this.season = season
   }
@@ -12,4 +12,4 @@ class MockSheetsApi {
   }
 }
 
-exports.MockSheetsApi = MockSheetsApi
+exports.FakeSheetsApi = FakeSheetsApi

@@ -3,7 +3,7 @@ const seasonData = require('./seasonData.json')
 
 let cache = {}
 
-exports.mockCache = function(type = 'real') {
+exports.fakeCache = function(type = 'real') {
   let getter
 
   switch (type) {
