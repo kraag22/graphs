@@ -1,22 +1,16 @@
-var mongo    = require('../app/mongo.js');
 const {google} = require('googleapis');
 
-// decide if download data from mongo or google api
-exports.get = function(season) {
-  return mongo.getTodayData(season)
-    .then(function(data) {
+// use cache or google api
+exports.get = async function(apiGetter, cache, season) {
+  const cacheResult = await cache.get(season)
 
-    if (data) {
-      console.log('use cached data');
-      return new Promise((resolve, reject) => {
-        resolve(data)
-      })
-    }
-    else {
-      console.log('fetching data from api')
-      return exports.getSheets(season).then(mongo.saveData)
-    }
-  })
+  if (cacheResult) {
+    return cacheResult
+  }
+
+  const apiData = await apiGetter(season)
+  await cache.set(season, apiData)
+  return apiData
 }
 
 exports.getSheets = function(season) {
@@ -29,9 +23,7 @@ exports.getSheets = function(season) {
       if (err) {
         reject(err)
       } else {
-        let data = {};
-        data.dataToSave = exports.toCoordinateObj(res.data.values)
-        data.season = season
+        const data = exports.toCoordinateObj(res.data.values)
         resolve(data)
       }
     })
