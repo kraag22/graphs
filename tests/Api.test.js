@@ -14,9 +14,8 @@ describe('I should be able to get season data with data.get()', () => {
       mockCache('failing'),
       '2018')
 
-    expect(Object.keys(result.dataToSave)).toHaveLength(181)
-    expect(result.season).toBe('2018')
-    expect(result.dataToSave['B6']).toBe('0')
+    expect(Object.keys(result)).toHaveLength(181)
+    expect(result['B6']).toBe('0')
   })
 
   it('from cache', async () => {

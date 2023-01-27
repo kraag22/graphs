@@ -1,15 +1,5 @@
 const seasonData = require('./seasonData.json')
 
-// const mockSheetsApi = {
-//   sheets: {
-//     spreadsheets: {
-//       values: {
-//         get: getSheets
-//       }
-//     }
-//   }
-// }
-
 class MockSheetsApi {
   constructor(season) {
     this.season = season
@@ -17,10 +7,7 @@ class MockSheetsApi {
 
   getSheets(spreadsheetId, range) {
     return new Promise((resolve, reject) => {
-      resolve({
-        season: this.season,
-        dataToSave: seasonData
-      })
+      resolve(seasonData)
     })
   }
 }

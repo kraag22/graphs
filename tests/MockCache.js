@@ -40,12 +40,12 @@ exports.mockCache = function(type = 'real') {
 
   return {
     get: getter,
-    set: function(data) {
+    set: function(key, data) {
       return new Promise((resolve, reject) => {
-        if (!data.season) {
-          reject('No season')
+        if (!key) {
+          reject('No key provided')
         }
-        cache[data.season] = data.dataToSave
+        cache[key] = data
         resolve(data)
       })
     },
