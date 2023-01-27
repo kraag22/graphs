@@ -26,8 +26,8 @@ if ('development' === app.get('env')) {
   app.use(errorhandler())
 }
 
-router.get('/', routes.index);
-router.get('/totals', routes.totals);
+router.get('/', routes.totals);
+router.get('/completion', routes.completion);
 router.get('/mates', routes.mates);
 
 app.use(router)
