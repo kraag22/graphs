@@ -61,3 +61,8 @@ exports.saveData = function(data) {
   })
   return promise;
 };
+
+exports.mongoCache = {
+  get: exports.getTodayData,
+  set: exports.saveData
+}
