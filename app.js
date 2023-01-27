@@ -4,8 +4,6 @@ var morgan = require('morgan')
 var errorhandler = require('errorhandler')
 var router = express.Router()
 var routes = require('./routes');
-var total = require('./routes/total');
-var mates = require('./routes/mates');
 var http = require('http');
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -29,8 +27,8 @@ if ('development' === app.get('env')) {
 }
 
 router.get('/', routes.index);
-router.get('/totals', total.list);
-router.get('/mates', mates.list);
+router.get('/totals', routes.totals);
+router.get('/mates', routes.mates);
 
 app.use(router)
 

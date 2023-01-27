@@ -1,17 +1,31 @@
-var data     = require('../app/data.js');
-var season   = require('../app/season.js');
-const NodeCache = require( "node-cache" );
-const cache = new NodeCache( { stdTTL: 12*60*60, checkperiod: 4*60*60 } );
+var data = require('../app/data.js')
+var season = require('../app/season.js')
+const NodeCache = require( "node-cache" )
+const cache = new NodeCache( { stdTTL: 12*60*60, checkperiod: 4*60*60 } )
 
-exports.index = function(req, res){
+function getSettings(data) {
+  return {
+    data: JSON.stringify(data),
+    season:season.get(),
+    seasons:season.getSeasons()
+  }
+}
 
-	season.set(req, res);
+async function render(req, res, view) {
+  season.set(req, res);
+  const seasonData = await data.get(data.getSheets, cache, season.get())
 
-  data.get(data.getSheets, cache, season.get()).then(function(data){
-    res.render('index', {
-      data: JSON.stringify(data),
-      season:season.get(),
-      seasons:season.getSeasons()});
-  });
+  res.render(view, getSettings(seasonData))
+}
 
-};
+exports.index = async function(req, res) {
+  await render(req, res, 'index')
+}
+
+exports.mates = async function(req, res) {
+  await render(req, res, 'mates')
+}
+
+exports.totals = async function(req, res) {
+  await render(req, res, 'totals')
+}
