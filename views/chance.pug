@@ -1,14 +1,14 @@
 extends layout
 
 block content
-  h1 Total wins & looses
+  h1 Chance to win
 
 
   div(class="col-xs-12 col-sm-10 col-sm-offset-1")
-    div(id="chartdiv" style="height:500px;font-size: 11px;")
+    ul(id="chance-list")
 
   script.
     var graph = new Graphs(!{data});
-    graph.renderTotals("chartdiv");
+    graph.renderChance("chance-list");
 
 

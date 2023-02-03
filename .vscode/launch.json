@@ -1,0 +1,12 @@
+{
+  "configurations": [
+
+    {
+      "type": "node-terminal",
+      "name": "Run Script: test-ci",
+      "request": "launch",
+      "command": "npm run test-ci",
+      "cwd": "${workspaceFolder}"
+    }
+  ]
+}

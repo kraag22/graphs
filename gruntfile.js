@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-module.exports = function(grunt) {
+module.exports = function (grunt) {
   // Project Configuration
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -21,17 +21,17 @@ module.exports = function(grunt) {
       css: {
         files: ['public/stylesheets/**'],
         options: {
-          livereload: true
-        }
-      }
+          livereload: true,
+        },
+      },
     },
     jshint: {
       all: {
         src: ['gruntfile.js', 'app.js', 'app/**/*.js'],
         options: {
-          jshintrc: true
-        }
-      }
+          jshintrc: true,
+        },
+      },
     },
     nodemon: {
       dev: {
@@ -43,23 +43,22 @@ module.exports = function(grunt) {
           nodeArgs: ['--inspect'],
           delayTime: 1,
           env: {
-            PORT: 3000
+            PORT: 3000,
           },
-          cwd: __dirname
-        }
-      }
-    }
-  });
+          cwd: __dirname,
+        },
+      },
+    },
+  })
 
   //Load NPM tasks
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-nodemon');
+  grunt.loadNpmTasks('grunt-contrib-watch')
+  grunt.loadNpmTasks('grunt-contrib-jshint')
+  grunt.loadNpmTasks('grunt-nodemon')
 
   //Making grunt default to force in order not to break the project.
-  grunt.option('force', true);
+  grunt.option('force', true)
 
   //Default task(s).
-  grunt.registerTask('default', ['jshint', 'nodemon', 'watch']);
-
-};
+  grunt.registerTask('default', ['jshint', 'nodemon', 'watch'])
+}

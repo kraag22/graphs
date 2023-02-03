@@ -3,28 +3,28 @@ const seasonData = require('./seasonData.json')
 
 let cache = {}
 
-exports.fakeCache = function(type = 'real') {
+exports.fakeCache = function (type = 'real') {
   let getter
 
   switch (type) {
     case 'passing':
-      getter = function(season) {
+      getter = function (season) {
         return new Promise((resolve, reject) => {
           resolve(seasonData)
         })
       }
-      break;
+      break
 
     case 'failing':
-      getter = function(season) {
+      getter = function (season) {
         return new Promise((resolve, reject) => {
           resolve(false)
         })
       }
-      break;
+      break
 
     case 'real':
-      getter = function(season) {
+      getter = function (season) {
         return new Promise((resolve, reject) => {
           if (cache[season]) {
             resolve(cache[season])
@@ -33,14 +33,14 @@ exports.fakeCache = function(type = 'real') {
           }
         })
       }
-      break;
+      break
     default:
       throw new Error('Invalid type: ' + type)
   }
 
   return {
     get: getter,
-    set: function(key, data) {
+    set: function (key, data) {
       return new Promise((resolve, reject) => {
         if (!key) {
           reject('No key provided')
@@ -49,9 +49,9 @@ exports.fakeCache = function(type = 'real') {
         resolve(data)
       })
     },
-    clear: function() {
+    clear: function () {
       cache = {}
     },
-    sampleSeasonData: seasonData
+    sampleSeasonData: seasonData,
   }
 }
