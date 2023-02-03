@@ -1,6 +1,6 @@
 const data = require('../app/data.js')
-const {FakeSheetsApi} = require('./FakeSheetsApi.js')
-const {fakeCache} = require('./fakeCache.js')
+const { FakeSheetsApi } = require('./FakeSheetsApi.js')
+const { fakeCache } = require('./fakeCache.js')
 
 describe('I should be able to get season data with data.get()', () => {
   afterEach(() => {
@@ -12,7 +12,8 @@ describe('I should be able to get season data with data.get()', () => {
     const result = await data.get(
       () => fakeSheetsApi.getSheets(),
       fakeCache('failing'),
-      '2018')
+      '2018'
+    )
 
     expect(Object.keys(result)).toHaveLength(181)
     expect(result['B6']).toBe('0')
@@ -24,7 +25,8 @@ describe('I should be able to get season data with data.get()', () => {
         throw new Error('Should not be called')
       },
       fakeCache('passing'),
-      '2018')
+      '2018'
+    )
 
     expect(Object.keys(result)).toHaveLength(181)
     expect(result['B6']).toBe('0')
@@ -35,10 +37,7 @@ describe('I should be able to get season data with data.get()', () => {
     const fakeSheetsApi = new FakeSheetsApi(season)
 
     // save to cache
-    await data.get(
-      () => fakeSheetsApi.getSheets(),
-      fakeCache('real'),
-      season)
+    await data.get(() => fakeSheetsApi.getSheets(), fakeCache('real'), season)
 
     // dont call api, get from cache
     const result = await data.get(
@@ -46,7 +45,8 @@ describe('I should be able to get season data with data.get()', () => {
         throw new Error('Should not be called')
       },
       fakeCache('real'),
-      season)
+      season
+    )
 
     expect(Object.keys(result)).toHaveLength(181)
     expect(result['B6']).toBe('0')
