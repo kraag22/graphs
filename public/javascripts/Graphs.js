@@ -164,6 +164,23 @@ class Graphs {
     )
   }
 
+  getWinsAndLosses() {
+    const data = []
+
+    for (var playerIndex in this.players_) {
+      var player = this.players_[playerIndex]
+      if (player.loses + player.wins > 1) {
+        data.push({
+          player: this.getPlayerName(playerIndex),
+          wins: player.wins,
+          looses: player.loses,
+        })
+      }
+    }
+
+    return data
+  }
+
   renderPie(id, season) {
     let coronaMissedDays = 0
     if (season == 2019 || season == 2020) {
@@ -201,21 +218,40 @@ class Graphs {
     })
   }
 
-  renderTotals(id) {
-    var data = []
+  renderChance(elementId) {
+    const data = this.getWinsAndLosses()
+    const element = document.getElementById(elementId)
 
-    for (var playerIndex in this.players_) {
-      var player = this.players_[playerIndex]
-      if (player.loses + player.wins > 1) {
-        data.push({
-          player: this.getPlayerName(playerIndex),
-          wins: player.wins,
-          looses: player.loses,
-        })
+    data.map((player) => {
+      const chance = Math.round(
+        (player.wins / (player.wins + player.looses)) * 100
+      )
+      player.chance = chance
+      return player
+    })
+
+    //sort data by chance desc
+    data.sort((a, b) => {
+      if (a.chance > b.chance) {
+        return -1
       }
-    }
+      if (a.chance < b.chance) {
+        return 1
+      }
+      return 0
+    })
 
-    var chart = AmCharts.makeChart(id, {
+    data.forEach((player) => {
+      const chanceElement = document.createElement('li')
+      chanceElement.innerHTML = `${player.player}: ${player.chance}%`
+      element.appendChild(chanceElement)
+    })
+  }
+
+  renderTotals(id) {
+    const data = this.getWinsAndLosses()
+
+    AmCharts.makeChart(id, {
       type: 'serial',
       theme: 'light',
       'columnWidth:': 0.6,

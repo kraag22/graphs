@@ -18,7 +18,6 @@ app.set('view engine', 'pug')
 app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.png')))
 app.use(morgan('dev'))
 app.use(cookieParser())
-app.use(require('stylus').middleware(__dirname + '/public'))
 app.use(express.static(path.join(__dirname, 'public')))
 
 // development only
@@ -27,8 +26,9 @@ if ('development' === app.get('env')) {
 }
 
 router.get('/', routes.totals)
-router.get('/completion', routes.completion)
 router.get('/mates', routes.mates)
+router.get('/chance', routes.chance)
+router.get('/completion', routes.completion)
 
 app.use(router)
 

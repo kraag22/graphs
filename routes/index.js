@@ -26,6 +26,10 @@ exports.mates = async function (req, res) {
   await render(req, res, 'mates')
 }
 
+exports.chance = async function (req, res) {
+  await render(req, res, 'chance')
+}
+
 exports.totals = async function (req, res) {
   await render(req, res, 'totals')
 }

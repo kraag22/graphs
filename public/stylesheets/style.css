@@ -32,3 +32,11 @@ div.completetion {
   display: table-cell;
   vertical-align: middle;
 }
+
+#chance-list {
+  font-size: 1.5em;
+}
+
+#chance-list li {
+  list-style-type: none;
+}
