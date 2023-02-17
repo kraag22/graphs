@@ -11,25 +11,38 @@ function getSettings(data) {
   }
 }
 
-async function render(req, res, view) {
-  season.set(req, res)
+async function render(req, res, view, additinalSettings = {}) {
   const seasonData = await data.get(data.getSheets, cache, season.get())
 
-  res.render(view, getSettings(seasonData))
+  res.render(view, Object.assign(getSettings(seasonData), additinalSettings))
 }
 
 exports.completion = async function (req, res) {
+  season.set(req, res)
+
   await render(req, res, 'completion')
 }
 
 exports.mates = async function (req, res) {
+  season.set(req, res)
+
   await render(req, res, 'mates')
 }
 
 exports.chance = async function (req, res) {
-  await render(req, res, 'chance')
+  season.set(req, res)
+
+  await render(req, res, 'chance', {
+    martin_chance: await data.getChancesForPlayer(
+      data.getSheets,
+      cache,
+      'Martin'
+    ),
+  })
 }
 
 exports.totals = async function (req, res) {
+  season.set(req, res)
+
   await render(req, res, 'totals')
 }

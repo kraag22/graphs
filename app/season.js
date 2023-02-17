@@ -9,6 +9,10 @@ function getCurrent() {
 //default season
 var season = getCurrent()
 
+exports.getFirstSeason = function () {
+  return 2013
+}
+
 // return currently active season
 exports.get = function () {
   return season
@@ -28,7 +32,17 @@ exports.set = function (req, res) {
 exports.getSeasons = function () {
   var arr = []
 
-  for (var i = 2013; i <= getCurrent(); i++) {
+  for (var i = exports.getFirstSeason(); i <= getCurrent(); i++) {
+    arr.push(i)
+  }
+
+  return arr
+}
+
+exports.getSeasonsUpTo = function (current) {
+  let arr = []
+
+  for (let i = exports.getFirstSeason(); i <= current; i++) {
     arr.push(i)
   }
 
