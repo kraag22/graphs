@@ -218,10 +218,8 @@ class Graphs {
     })
   }
 
-  renderChance(elementId) {
+  getPlayerChances() {
     const data = this.getWinsAndLosses()
-    const element = document.getElementById(elementId)
-
     data.map((player) => {
       const chance = Math.round(
         (player.wins / (player.wins + player.looses)) * 100
@@ -240,6 +238,14 @@ class Graphs {
       }
       return 0
     })
+
+    return data
+  }
+
+  renderChance(elementId) {
+    const element = document.getElementById(elementId)
+
+    let data = this.getPlayerChances()
 
     data.forEach((player) => {
       const chanceElement = document.createElement('li')

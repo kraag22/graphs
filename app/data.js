@@ -1,4 +1,6 @@
 const { google } = require('googleapis')
+const chance = require('./chance.js')
+const season = require('./season.js')
 
 // use cache or google api
 exports.get = async function (apiGetter, cache, season) {
@@ -46,4 +48,34 @@ exports.toCoordinateObj = function (rows) {
     }
   })
   return data
+}
+
+// download data for all seasons
+exports.getDataForSeasonsUpTo = async function (api, cache, seasons) {
+  let promises = seasons.map((season) => {
+    return exports.get(api, cache, season)
+  })
+
+  let allData = await Promise.all(promises)
+
+  // return allData combined with seasons
+  return allData.map((data, index) => {
+    return {
+      season: seasons[index],
+      data: data,
+    }
+  })
+}
+
+exports.getChancesForPlayer = async function (api, cache, playerName) {
+  const seasons = season.getSeasonsUpTo(season.get())
+  const seasonsButLast = seasons.length > 1 ? seasons.slice(0, -1) : seasons
+
+  const seasonsData = await exports.getDataForSeasonsUpTo(
+    api,
+    cache,
+    seasonsButLast
+  )
+  let playersChances = chance.getPlayerChances(seasonsData)
+  return chance.computeChance(playersChances, playerName)
 }

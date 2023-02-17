@@ -1,6 +1,7 @@
 const data = require('../app/data.js')
 const { FakeSheetsApi } = require('./FakeSheetsApi.js')
 const { fakeCache } = require('./fakeCache.js')
+const { getSeasonsUpTo } = require('../app/season.js')
 
 describe('I should be able to get season data with data.get()', () => {
   afterEach(() => {
@@ -50,5 +51,34 @@ describe('I should be able to get season data with data.get()', () => {
 
     expect(Object.keys(result)).toHaveLength(181)
     expect(result['B6']).toBe('0')
+  })
+})
+
+describe('getDataForSeasonsUpTo()', () => {
+  it('should work for one season', async () => {
+    const fakeSheetsApi = new FakeSheetsApi()
+    const result = await data.getDataForSeasonsUpTo(
+      fakeSheetsApi,
+      fakeCache('passing'),
+      [2013]
+    )
+
+    expect(Object.keys(result[0].data)).toHaveLength(181)
+  })
+
+  it('should work for multiple seasons', async () => {
+    const fakeSheetsApi = new FakeSheetsApi()
+    const result = await data.getDataForSeasonsUpTo(
+      fakeSheetsApi,
+      fakeCache('passing'),
+      getSeasonsUpTo(2015)
+    )
+
+    expect(result[0].season).toBe(2013)
+    expect(Object.keys(result[0].data)).toHaveLength(181)
+    expect(result[1].season).toBe(2014)
+    expect(Object.keys(result[1].data)).toHaveLength(181)
+    expect(result[2].season).toBe(2015)
+    expect(result).toHaveLength(3)
   })
 })
