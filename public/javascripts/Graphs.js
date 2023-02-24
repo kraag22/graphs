@@ -242,14 +242,21 @@ class Graphs {
     return data
   }
 
-  renderChance(elementId) {
+  renderChance(elementId, chances, chanceInPreviousSeasons) {
     const element = document.getElementById(elementId)
+    const title = 'Difference from average chance in all previous seasons'
 
-    let data = this.getPlayerChances()
-
-    data.forEach((player) => {
+    chances.forEach((player) => {
       const chanceElement = document.createElement('li')
-      chanceElement.innerHTML = `${player.player}: ${player.chance}%`
+      let row = `${player.player}: ${player.chance}%`
+      if (chanceInPreviousSeasons[player.player]) {
+        let velocity = player.chance - chanceInPreviousSeasons[player.player]
+        const sign = velocity >= 0 ? 'positive' : 'negative'
+        velocity = velocity > 0 ? `+${velocity}` : velocity
+
+        row += ` (<span class="velocity ${sign}" title="${title}">${velocity}%</span>)`
+      }
+      chanceElement.innerHTML = row
       element.appendChild(chanceElement)
     })
   }

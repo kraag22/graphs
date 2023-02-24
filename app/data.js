@@ -67,15 +67,33 @@ exports.getDataForSeasonsUpTo = async function (api, cache, seasons) {
   })
 }
 
-exports.getChancesForPlayer = async function (api, cache, playerName) {
+const getButLastSeasonsData = async function (api, cache) {
   const seasons = season.getSeasonsUpTo(season.get())
   const seasonsButLast = seasons.length > 1 ? seasons.slice(0, -1) : seasons
+  return await exports.getDataForSeasonsUpTo(api, cache, seasonsButLast)
+}
 
-  const seasonsData = await exports.getDataForSeasonsUpTo(
-    api,
-    cache,
-    seasonsButLast
-  )
+exports.addChanceData = async function (settingsData, seasonData, api, cache) {
+  const players = chance.getPlayersInSeason(seasonData)
+  const chances = chance.getPlayersChancesInSeason(seasonData)
+  const seasonsData = await getButLastSeasonsData(api, cache)
   let playersChances = chance.getPlayerChances(seasonsData)
-  return chance.computeChance(playersChances, playerName)
+
+  const chancesInPreviousSeasons = players
+    .map((playerName) => {
+      return {
+        name: playerName,
+        chance: chance.computeChance(playersChances, playerName),
+      }
+    })
+    .reduce((acc, item) => {
+      acc[item.name] = item.chance
+      return acc
+    }, {})
+
+  return {
+    ...settingsData,
+    chances: JSON.stringify(chances),
+    chancesInPreviousSeasons: JSON.stringify(chancesInPreviousSeasons),
+  }
 }

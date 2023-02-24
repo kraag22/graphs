@@ -15,7 +15,11 @@ exports.getPlayerChances = function (seasonsData) {
 
 exports.computeChance = function (playerChancesData, name) {
   let playerData = playerChancesData.map((item) => {
-    return item.data[name].chance
+    return item.data[name]?.chance
+  })
+
+  playerData = playerData.filter((item) => {
+    return item != null && item != undefined
   })
 
   const sum = playerData.reduce((acc, item) => {
@@ -23,4 +27,14 @@ exports.computeChance = function (playerChancesData, name) {
   }, 0)
 
   return Math.round(sum / playerData.length)
+}
+
+exports.getPlayersInSeason = function (seasonData) {
+  let graphs = new Graphs(seasonData)
+  return Object.values(graphs.getPlayers(1))
+}
+
+exports.getPlayersChancesInSeason = function (seasonData) {
+  let graphs = new Graphs(seasonData)
+  return graphs.getPlayerChances()
 }

@@ -40,3 +40,15 @@ div.completetion {
 #chance-list li {
   list-style-type: none;
 }
+
+.velocity {
+  font-size: 0.9em;
+}
+
+.velocity.positive {
+  color: green;
+}
+
+.velocity.negative {
+  color: red;
+}

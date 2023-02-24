@@ -1,11 +1,17 @@
 {
   "configurations": [
-
     {
       "type": "node-terminal",
-      "name": "Run Script: test-ci",
+      "name": "Run test-ci",
       "request": "launch",
       "command": "npm run test-ci",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "node-terminal",
+      "name": "Run app",
+      "request": "launch",
+      "command": "npm run start",
       "cwd": "${workspaceFolder}"
     }
   ]

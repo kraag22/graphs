@@ -2,6 +2,7 @@ const chance = require('../app/chance.js')
 const data = require('../app/data.js')
 const { FakeSheetsApi } = require('./FakeSheetsApi.js')
 const { fakeCache } = require('./fakeCache.js')
+const seasonData = require('./seasonData.json')
 
 describe('getPlayerChances()', () => {
   it('should work for multiple seasons', async () => {
@@ -39,5 +40,23 @@ describe('computeChance()', () => {
     let playersChances = chance.getPlayerChances(result)
 
     expect(chance.computeChance(playersChances, 'Víťa')).toBe(81)
+    expect(chance.computeChance(playersChances, 'Martin')).toBe(33)
+  })
+})
+
+describe('getPlayersInSeason()', () => {
+  it('should work', () => {
+    const expectedPlayers = [
+      'Martin',
+      'Michal',
+      'Havli',
+      'Vojta m',
+      'Pavel',
+      'Víťa',
+      'Vojta S',
+      'Tomas K',
+      'Zdenek',
+    ]
+    expect(chance.getPlayersInSeason(seasonData)).toEqual(expectedPlayers)
   })
 })
