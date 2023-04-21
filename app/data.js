@@ -4,10 +4,12 @@ const season = require('./season.js')
 
 // use cache or google api
 exports.get = async function (apiGetter, cache, season) {
-  const cacheResult = await cache.get(season)
+  if (exports.allowedToUseCache()) {
+    const cacheResult = await cache.get(season)
 
-  if (cacheResult) {
-    return cacheResult
+    if (cacheResult) {
+      return cacheResult
+    }
   }
 
   const apiData = await apiGetter(season)
@@ -96,4 +98,11 @@ exports.addChanceData = async function (settingsData, seasonData, api, cache) {
     chances: JSON.stringify(chances),
     chancesInPreviousSeasons: JSON.stringify(chancesInPreviousSeasons),
   }
+}
+
+exports.allowedToUseCache = function () {
+  const today = new Date()
+  const isMonday = today.getDay() === 1
+  const isEvening = today.getHours() >= 21 && today.getHours() < 24
+  return !(isMonday && isEvening)
 }

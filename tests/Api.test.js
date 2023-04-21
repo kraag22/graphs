@@ -82,3 +82,29 @@ describe('getDataForSeasonsUpTo()', () => {
     expect(result).toHaveLength(3)
   })
 })
+
+describe('function ', () => {
+  let mondayAfternoon = new Date('2023-04-24 17:00:00')
+  let mondayEvening = new Date('2023-04-24 21:05:00')
+  let wednesdayEvening = new Date('2023-04-26 22:00:00')
+
+  it('allowedToUseCache should work', () => {
+    jest.useFakeTimers().setSystemTime(mondayAfternoon)
+    expect(data.allowedToUseCache()).toBe(
+      true,
+      'on monday afternoon is allowed to use cache'
+    )
+
+    jest.useFakeTimers().setSystemTime(mondayEvening)
+    expect(data.allowedToUseCache()).toBe(
+      false,
+      'on monday evening is not allowed to use cache'
+    )
+
+    jest.useFakeTimers().setSystemTime(wednesdayEvening)
+    expect(data.allowedToUseCache()).toBe(
+      true,
+      'on wednesday evening is allowed to use cache'
+    )
+  })
+})
