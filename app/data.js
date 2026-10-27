@@ -1,6 +1,7 @@
 const { google } = require('googleapis')
 const chance = require('./chance.js')
 const season = require('./season.js')
+const serialize = require('./serialize.js')
 
 // use cache or google api
 exports.get = async function (apiGetter, cache, season) {
@@ -17,25 +18,13 @@ exports.get = async function (apiGetter, cache, season) {
   return apiData
 }
 
-exports.getSheets = function (season) {
-  const promise = new Promise((resolve, reject) => {
-    const sheets = google.sheets({ version: 'v4', auth: process.env.API_KEY })
-    sheets.spreadsheets.values.get(
-      {
-        spreadsheetId: '0Ar1Jmgo4O1wrdDVVYjZWRDkxQ1EwY3oyUG16dEZCSVE',
-        range: season,
-      },
-      (err, res) => {
-        if (err) {
-          reject(err)
-        } else {
-          const data = exports.toCoordinateObj(res.data.values)
-          resolve(data)
-        }
-      }
-    )
+exports.getSheets = async function (season) {
+  const sheets = google.sheets({ version: 'v4', auth: process.env.API_KEY })
+  const res = await sheets.spreadsheets.values.get({
+    spreadsheetId: '0Ar1Jmgo4O1wrdDVVYjZWRDkxQ1EwY3oyUG16dEZCSVE',
+    range: String(season),
   })
-  return promise
+  return exports.toCoordinateObj(res.data.values ?? [])
 }
 
 exports.toCoordinateObj = function (rows) {
@@ -69,16 +58,16 @@ exports.getDataForSeasonsUpTo = async function (api, cache, seasons) {
   })
 }
 
-const getButLastSeasonsData = async function (api, cache) {
-  const seasons = season.getSeasonsUpTo(season.get())
-  const seasonsButLast = seasons.length > 1 ? seasons.slice(0, -1) : seasons
+const getButLastSeasonsData = async function (api, cache, selectedSeason) {
+  const seasons = season.getSeasonsUpTo(selectedSeason)
+  const seasonsButLast = seasons.slice(0, -1)
   return await exports.getDataForSeasonsUpTo(api, cache, seasonsButLast)
 }
 
 exports.addChanceData = async function (settingsData, seasonData, api, cache) {
   const players = chance.getPlayersInSeason(seasonData)
   const chances = chance.getPlayersChancesInSeason(seasonData)
-  const seasonsData = await getButLastSeasonsData(api, cache)
+  const seasonsData = await getButLastSeasonsData(api, cache, settingsData.season)
   let playersChances = chance.getPlayerChances(seasonsData)
 
   const chancesInPreviousSeasons = players
@@ -95,8 +84,8 @@ exports.addChanceData = async function (settingsData, seasonData, api, cache) {
 
   return {
     ...settingsData,
-    chances: JSON.stringify(chances),
-    chancesInPreviousSeasons: JSON.stringify(chancesInPreviousSeasons),
+    chances: serialize(chances),
+    chancesInPreviousSeasons: serialize(chancesInPreviousSeasons),
   }
 }
 

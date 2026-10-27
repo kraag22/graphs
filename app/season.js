@@ -6,27 +6,32 @@ function getCurrent() {
   return month > 8 ? year : year - 1
 }
 
-//default season
-var season = getCurrent()
-
 exports.getFirstSeason = function () {
   return 2013
 }
 
-// return currently active season
-exports.get = function () {
-  return season
+exports.get = getCurrent
+
+function parseSeason(value) {
+  if (typeof value !== 'string' || !/^\d{4}$/.test(value)) return undefined
+  const selected = Number(value)
+  return selected >= exports.getFirstSeason() && selected <= getCurrent()
+    ? selected
+    : undefined
 }
 
 // sets season, based on query param or cookie value
 exports.set = function (req, res) {
-  if (req.query.season && !isNaN(parseInt(req.query.season))) {
-    season = parseInt(req.query.season)
-
-    res.cookie('season', season, { maxAge: 1000 * 3600 * 24 * 30 * 12 })
-  } else if (req.cookies.season) {
-    season = parseInt(req.cookies.season)
+  const selected = parseSeason(req.query?.season)
+  if (selected !== undefined) {
+    res.cookie('season', selected, {
+      maxAge: 1000 * 3600 * 24 * 30 * 12,
+      httpOnly: true,
+      sameSite: 'lax',
+    })
+    return selected
   }
+  return parseSeason(req.cookies?.season) ?? getCurrent()
 }
 
 exports.getSeasons = function () {

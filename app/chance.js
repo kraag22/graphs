@@ -19,14 +19,14 @@ exports.computeChance = function (playerChancesData, name) {
   })
 
   playerData = playerData.filter((item) => {
-    return item != null && item != undefined
+    return Number.isFinite(item)
   })
 
   const sum = playerData.reduce((acc, item) => {
     return acc + item
   }, 0)
 
-  return Math.round(sum / playerData.length)
+  return playerData.length ? Math.round(sum / playerData.length) : null
 }
 
 exports.getPlayersInSeason = function (seasonData) {

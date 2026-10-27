@@ -1,4 +1,3 @@
-const { get } = require('grunt')
 const seasonData = require('./seasonData.json')
 
 let cache = {}

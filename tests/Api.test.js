@@ -4,8 +4,12 @@ const { fakeCache } = require('./fakeCache.js')
 const { getSeasonsUpTo } = require('../app/season.js')
 
 describe('I should be able to get season data with data.get()', () => {
+  beforeEach(() => {
+    jest.useFakeTimers().setSystemTime(new Date('2026-10-27T12:00:00'))
+  })
   afterEach(() => {
     fakeCache().clear()
+    jest.useRealTimers()
   })
 
   it('from API', async () => {
@@ -55,6 +59,10 @@ describe('I should be able to get season data with data.get()', () => {
 })
 
 describe('getDataForSeasonsUpTo()', () => {
+  beforeEach(() => {
+    jest.spyOn(data, 'allowedToUseCache').mockReturnValue(true)
+  })
+  afterEach(() => jest.restoreAllMocks())
   it('should work for one season', async () => {
     const fakeSheetsApi = new FakeSheetsApi()
     const result = await data.getDataForSeasonsUpTo(
@@ -84,6 +92,7 @@ describe('getDataForSeasonsUpTo()', () => {
 })
 
 describe('function ', () => {
+  afterEach(() => jest.useRealTimers())
   let mondayAfternoon = new Date('2023-04-24 17:00:00')
   let mondayEvening = new Date('2023-04-24 21:05:00')
   let wednesdayEvening = new Date('2023-04-26 22:00:00')
