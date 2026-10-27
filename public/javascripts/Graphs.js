@@ -248,15 +248,18 @@ class Graphs {
 
     chances.forEach((player) => {
       const chanceElement = document.createElement('li')
-      let row = `${player.player}: ${player.chance}%`
-      if (chanceInPreviousSeasons[player.player]) {
+      chanceElement.textContent = `${player.player}: ${player.chance}%`
+      if (Number.isFinite(chanceInPreviousSeasons[player.player])) {
         let velocity = player.chance - chanceInPreviousSeasons[player.player]
         const sign = velocity >= 0 ? 'positive' : 'negative'
         velocity = velocity > 0 ? `+${velocity}` : velocity
 
-        row += ` (<span class="velocity ${sign}" title="${title}">${velocity}%</span>)`
+        const difference = document.createElement('span')
+        difference.className = `velocity ${sign}`
+        difference.title = title
+        difference.textContent = `${velocity}%`
+        chanceElement.append(' (', difference, ')')
       }
-      chanceElement.innerHTML = row
       element.appendChild(chanceElement)
     })
   }

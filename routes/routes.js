@@ -1,12 +1,13 @@
 var data = require('../app/data.js')
 var season = require('../app/season.js')
+const serialize = require('../app/serialize.js')
 const NodeCache = require('node-cache')
 const cache = new NodeCache({ stdTTL: 12 * 60 * 60, checkperiod: 4 * 60 * 60 })
 
-function getSettings(data) {
+function getSettings(data, selectedSeason) {
   return {
-    data: JSON.stringify(data),
-    season: season.get(),
+    data: serialize(data),
+    season: selectedSeason,
     seasons: season.getSeasons(),
   }
 }
@@ -19,10 +20,10 @@ async function render(
     return settings
   }
 ) {
-  season.set(req, res)
-  const seasonData = await data.get(data.getSheets, cache, season.get())
+  const selectedSeason = season.set(req, res)
+  const seasonData = await data.get(data.getSheets, cache, selectedSeason)
   const transformedData = await addAdditionalSettings(
-    getSettings(seasonData),
+    getSettings(seasonData, selectedSeason),
     seasonData,
     data.getSheets,
     cache

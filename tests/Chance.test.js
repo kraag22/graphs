@@ -4,6 +4,11 @@ const { FakeSheetsApi } = require('./FakeSheetsApi.js')
 const { fakeCache } = require('./fakeCache.js')
 const seasonData = require('./seasonData.json')
 
+beforeEach(() => {
+  jest.spyOn(data, 'allowedToUseCache').mockReturnValue(true)
+})
+afterEach(() => jest.restoreAllMocks())
+
 describe('getPlayerChances()', () => {
   it('should work for multiple seasons', async () => {
     const result = await data.getDataForSeasonsUpTo(
@@ -30,6 +35,10 @@ describe('getPlayerChances()', () => {
 })
 
 describe('computeChance()', () => {
+  it('returns null when a player has no history, but preserves a zero chance', () => {
+    expect(chance.computeChance([], 'New player')).toBeNull()
+    expect(chance.computeChance([{ data: { Player: { chance: 0 } } }], 'Player')).toBe(0)
+  })
   it('should work for player', async () => {
     const result = await data.getDataForSeasonsUpTo(
       new FakeSheetsApi(),
@@ -41,6 +50,17 @@ describe('computeChance()', () => {
 
     expect(chance.computeChance(playersChances, 'Víťa')).toBe(81)
     expect(chance.computeChance(playersChances, 'Martin')).toBe(33)
+  })
+})
+
+describe('historical chances', () => {
+  it('does not include the first season as its own history', async () => {
+    const api = jest.fn()
+    const result = await data.addChanceData({ season: 2013 }, seasonData, api, fakeCache())
+    expect(api).not.toHaveBeenCalled()
+    const previousChances = Object.values(JSON.parse(result.chancesInPreviousSeasons))
+    expect(previousChances).toHaveLength(9)
+    expect(previousChances.every(value => value === null)).toBe(true)
   })
 })
 
